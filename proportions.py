@@ -37,7 +37,7 @@ class one_pulse_estimator:
         self.af = admixture_proportions
         return admixture_proportions
 
-    def init_matrixes(self, n, s0): #4 moment
+    def init_matrixes(self, n, s0): #need to update
         M4 = np.array([
             [n**2 - 6*n + 6, -2*n, -2*n, -2*n],
             [n - 1, n**2 - n, n, n],
@@ -56,7 +56,7 @@ class one_pulse_estimator:
         y = np.array([y4, y41, y42, y43], dtype=np.float64)
         return M4, v0, y
 
-    def LD4(self, a, b, c, d, g, *args): #4 moment
+    def LD4(self, a, b, c, d, g, *args): #need to update
         R4 = np.array([
             [np.exp(-2*(np.abs(a-b) + np.abs(b-c) + np.abs(c-d))), 0, 0, 0],
             [0, np.exp(-2*(np.abs(a-b)+np.abs(c-d))), 0, 0],

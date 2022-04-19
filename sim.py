@@ -1,7 +1,7 @@
 import msprime
 
 
-def one_pulse(g, s0, sample_sizes=[100, 100, 100], mu=1.25e-8, rho = 1.6e-9, N_haploid = [1000, 1000, 1000], lenght_m = 1, seed=1):
+def one_pulse(g=15, s0=0.5, sample_sizes=[100, 100, 100], mu=1.25e-8, rho = 1.6e-9, N_haploid = [1000, 1000, 1000], lenght_m = 1, seed=1):
     length=int(lenght_m/rho)
 
     dem = msprime.Demography()
@@ -20,8 +20,8 @@ def one_pulse(g, s0, sample_sizes=[100, 100, 100], mu=1.25e-8, rho = 1.6e-9, N_h
         #model=[msprime.DiscreteTimeWrightFisher(duration=50), msprime.StandardCoalescent(duration=3950)],
         #model=[msprime.DiscreteTimeWrightFisher(duration=3950), msprime.StandardCoalescent(duration=50)],
         #model=msprime.DiscreteTimeWrightFisher(),
-        model=msprime.StandardCoalescent(),
-        #model='hudson',
+        #model=msprime.StandardCoalescent(),
+        model='hudson',
         random_seed=seed)
     #mts = msprime.sim_mutations(ts, rate=mu, random_seed=seed)
     return ts
