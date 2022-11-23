@@ -69,55 +69,50 @@ cdef double getroot2(double a, double b, double c, double d):
     return 0.5*(a+d+getdiscr(a, b, c, d))
 
 @cython.cdivision(True)
-cdef double getvn2(double sg, double g, double length, double N):
-
-    cdef double n = g
-
-    cdef double ll = (1 + exp(-2*length))/2
-    cdef double ldl = (1 - exp(-2*length))/2
-
-    cdef double a = geta(N, ll, ldl, sg)
-    cdef double b = getb(N, ll, ldl, sg)
-    cdef double c = getc(N, ll, ldl, sg)
-    cdef double d = getd(N, ll, ldl, sg)
-
-    cdef double discr = getdiscr(a, b, c, d)
-
-    cdef double v00 = 1-sg
-    cdef double v01 = (1-sg)*(1-sg)
-
-    cdef double r1 = getroot1(a, b, c, d)
-    cdef double r2 = getroot2(a, b, c, d)
-    cdef double dr = pow(r1, n) - pow(r2, n)
-    return 0.5*(-2*c*(dr)*v00+((a-d)*dr+discr*(r1**n+r2**n))*v01)/ discr
+cdef double getvn2(
+        double sg, double g, double length,
+        double a, double b, double c, double d,
+        double ll, double ldl, double discr, double dr,
+        double r1, double r2, double v00, double v01,
+        double N):
+    return 0.5*(-2*c*(dr)*v00+((a-d)*dr+discr*(r1**g+r2**g))*v01)/ discr
 
 @cython.cdivision(True)
-cdef double getvn1(double sg, double g, double length, double N):
-
-    cdef double n = g
-
-    cdef double ll = (1 + exp(-2*length))/2
-    cdef double ldl = (1 - exp(-2*length))/2
-
-    cdef double a = geta(N, ll, ldl, sg)
-    cdef double b = getb(N, ll, ldl, sg)
-    cdef double c = getc(N, ll, ldl, sg)
-    cdef double d = getd(N, ll, ldl, sg)
-
-    cdef double discr = getdiscr(a, b, c, d)
-
-    cdef double v00 = 1-sg
-    cdef double v01 = (1-sg)*(1-sg)
-
-    r1 = getroot1(a, b, c, d)
-    r2 = getroot2(a, b, c, d)
-    dr = r1**n - r2**n
-    return 0.5 * (discr*v00*(r1**n+r2**n) + (d - a)*dr*v00 - 2*b*v01*dr) / discr
+cdef double getvn1(
+        double sg, double g, double length,
+        double a, double b, double c, double d,
+        double ll, double ldl, double discr, double dr,
+        double r1, double r2, double v00, double v01,
+        double N):
+    return 0.5 * (discr*v00*(r1**g+r2**g) + (d - a)*dr*v00 - 2*b*v01*dr) / discr
 
 
 cdef double fun(double l, double ls, double s, double gs, double dur, double N):
     length = l - ls
-    return (getvn1(s, dur-1, length, N) - getvn2(s, dur-1, length, N)) * pow(0.5 * (1 + exp(-2*length)), gs)
+
+    cdef double ll = (1 + exp(-2*length))/2
+    cdef double ldl = (1 - exp(-2*length))/2
+
+    cdef double a = geta(N, ll, ldl, s)
+    cdef double b = getb(N, ll, ldl, s)
+    cdef double c = getc(N, ll, ldl, s)
+    cdef double d = getd(N, ll, ldl, s)
+
+    cdef double discr = getdiscr(a, b, c, d)
+
+    cdef double r1 = getroot1(a, b, c, d)
+    cdef double r2 = getroot2(a, b, c, d)
+
+    cdef double v00 = 1-s
+    cdef double v01 = (1-s)*(1-s)
+
+    cdef double dr = pow(r1, dur-1) - pow(r2, dur-1)
+
+    return (getvn1(s, dur-1, length, a, b, c, d, ll,
+                   ldl, discr, dr, r1, r2, v00, v01, N)
+          - getvn2(s, dur-1, length, a, b, c, d, ll,
+                   ldl, discr, dr, r1, r2, v00, v01, N)) \
+          * pow(ll, gs)
 # cdef double fun(double l, double ls, double s, double gs, double dur):
 #     length = abs(l - ls)
 #     return (getvn1(s, dur, length) - getvn2(s, dur, length)) * pow(0.5 * (1 + exp(-2*length)), gs)
@@ -139,11 +134,6 @@ def fun3(double l, double ls, double lss,
     cdef double ldls = (1 - exp(-2*d1)) / 2
     cdef double lsdlss = (1 - exp(-2*d3)) / 2
     cdef double lslss = (1 + exp(-2*d3)) / 2
-#     THE SAME - ну и треш
-#     cdef double llslss = exp(-2*d2) + (1-exp(-2*d1))/2*exp(-2*d3) + exp(-2*d1)*(1-exp(-2*d3))/2 + (1 - exp(-2*d1))*(1 - exp(-2*d3))/4
-#     cdef double llsdlss = exp(-2*d1) * (1 - exp(-2*d3)) / 2 + (1 - exp(-2*d1))*(1 - exp(-2*d3))/4
-#     cdef double ldlslss = (1 - exp(-2*d1)) / 2 * exp(-2*d3) + (1 - exp(-2*d1))*(1 - exp(-2*d3))/4
-#     cdef double ldlsdlss = ldls*lsdlss
     cdef double llslss = lls*lslss
     cdef double llsdlss = lls*lsdlss
     cdef double ldlslss = ldls*lslss
@@ -160,31 +150,6 @@ def fun3(double l, double ls, double lss,
         [0, 0, 0, 0, 1]
     ])
 
-#     # using the same map as in LaNeta
-#     cdef double lls = (exp(-d1))
-#     cdef double ldls = (1 - exp(-d1))
-#     cdef double lsdlss = (1 - exp(-d3))
-#     cdef double lslss = (exp(-d3))
-# #     THE SAME - ну и треш
-# #     cdef double llslss = exp(-2*d2) + (1-exp(-2*d1))/2*exp(-2*d3) + exp(-2*d1)*(1-exp(-2*d3))/2 + (1 - exp(-2*d1))*(1 - exp(-2*d3))/4
-# #     cdef double llsdlss = exp(-2*d1) * (1 - exp(-2*d3)) / 2 + (1 - exp(-2*d1))*(1 - exp(-2*d3))/4
-# #     cdef double ldlslss = (1 - exp(-2*d1)) / 2 * exp(-2*d3) + (1 - exp(-2*d1))*(1 - exp(-2*d3))/4
-# #     cdef double ldlsdlss = ldls*lsdlss
-#     cdef double llslss = lls*lslss
-#     cdef double llsdlss = lls*lsdlss
-#     cdef double ldlslss = ldls*lslss
-#     cdef double ldlsdlss = ldls*lsdlss
-#     cdef double llss = llslss + ldlsdlss
-#     cdef double ldlss = 1 - (llslss + ldls*lsdlss)
-
-    # # preprint
-    # U = np.array([
-    # [llslss, llsdlss, ldlslss, ldlsdlss, 0],
-    # [0, lls, 0, 0, ldls],
-    # [0, 0, lslss, 0, ldlss],
-    # [0, 0, 0, llss, lsdlss],
-    # [0, 0, 0, 0, 1]
-    # ])
     eigv = np.array([1, -1, -1, -1, 2], dtype=float)
 
     A = L @ U @ D

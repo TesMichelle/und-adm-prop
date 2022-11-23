@@ -28,8 +28,10 @@ def one_pulse(g=15, s0=0.5, sample_sizes=[100, 100, 100], mu=1.25e-8, rho = 1.6e
 
 def const_gen_flow(g_start=2, g_end=11, sg=None, Tdiv=4000, total_s = 0.2,
                    sample_sizes=[100, 100, 100], N_haploid = [1000, 1000, 1000],
-                   mu=1.25e-8, rho = 1.6e-9, lenght_m = 1, seed=1):
+                   mu=1.25e-8, rho = 1.6e-9, lenght_m = 1, seed=1, sim_mut=False):
     length=int(lenght_m/rho)
+
+    # print('msprime seed:', seed)
 
     if sg == None:
         dur = g_end - g_start + 1
@@ -56,5 +58,6 @@ def const_gen_flow(g_start=2, g_end=11, sg=None, Tdiv=4000, total_s = 0.2,
         #model=msprime.StandardCoalescent(),
         model='dtwf',
         random_seed=seed)
-    #mts = msprime.sim_mutations(ts, rate=mu, random_seed=seed)
+    if sim_mut:
+        ts = msprime.sim_mutations(ts, rate=mu, random_seed=seed)
     return ts

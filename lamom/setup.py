@@ -1,21 +1,12 @@
-import sys
+from setuptools import Extension, setup
+from Cython.Build import cythonize
 
-from distutils.core import setup
-from distutils.extension import Extension
-from Cython.Distutils import build_ext
+import numpy as np
 
-import numpy
-import scipy
+extension = Extension("calcmom", ["calculate_moments.pyx"],
+                language='c', include_dirs=[np.get_include()])
 
-
-extra_compile_args = [""]#["-stdlib=libc", "-std=c"]
-
-
-ext = Extension("calcmom", ["calculate_moments.pyx"],
-                include_dirs = [numpy.get_include()],
-                language='c',
-                extra_compile_args=extra_compile_args,
-      )
-
-setup(ext_modules=[ext],
-      cmdclass = {'build_ext': build_ext})
+setup(
+    name = "calcmom",
+    ext_modules = cythonize(extension)
+)

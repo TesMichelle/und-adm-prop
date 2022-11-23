@@ -89,7 +89,7 @@ class kMoment:
         return (1 - 1 / (2*N))**g * (s - s**2) * 2 / (2 + g)
 
     def metr_one_pulse(self, g):
-        return self.eq_2(g, self.s0, self.N) - self.k2
+        return self.eq_2(g, self.k1_sampled, self.N) - self.k2_sampled
 
     def metr_cont(self, par):
         prop_per_gen = get_prop_per_gen(self.k1_sampled, par[1])
@@ -98,6 +98,15 @@ class kMoment:
         return (getk2(prop_per_gen, par[0], par[1],
                      L=self.L, N=self.N) - self.k2_sampled,
                getk3(prop_per_gen, par[0], par[1],
+                     L=self.L, N=self.N) - self.k3_sampled)
+
+    def metr_cont_start_end(self, par):
+        prop_per_gen = get_prop_per_gen(self.k1_sampled, par[1]-par[0]+1)
+        if not self.silence:
+            print(par)
+        return (getk2(prop_per_gen, par[0], par[1]-par[0]+1,
+                     L=self.L, N=self.N) - self.k2_sampled,
+               getk3(prop_per_gen, par[0], par[1]-par[0]+1,
                      L=self.L, N=self.N) - self.k3_sampled)
 
     def metr_cont_3(self, par):
@@ -110,20 +119,32 @@ class kMoment:
                 k2 - self.k2_sampled,
                 k3 - self.k3_sampled)
 
-    def estimate_one_pulse(self):
-        x0 = 1
+    def estimate_one_pulse(self, x0=[5]):
         x = least_squares(self.metr_one_pulse, x0)
         self.res = x
         return x.x
 
-    def estimate_cont(self, silence=True, x0=[5, 5]):
+    def estimate_cont(self, silence=True, x0=[5, 5], opb=False):
 
         self.silence = silence
 
-        x = least_squares(self.metr_cont, x0,
-                          bounds=([0, 0.05], [np.inf, np.inf]))
+        if opb: # dur > opt - g_start + 1
+            optime = self.estimate_one_pulse()[0]
+            print(optime)
+            x0 = [optime*0.5, optime*1.5]
+            x = least_squares(self.metr_cont_start_end, x0,
+                              bounds=([0, optime], [optime, np.inf]))
+            T_end = x.x[1]
+            duration = x.x[1] - x.x[0] + 1
+        else:
+            bounds = ([0, 0.05], [np.inf, np.inf])
+            x = least_squares(self.metr_cont, x0,
+                              bounds=([0, 0.05], [np.inf, np.inf]))
+            T_end = x.x[1] + x.x[0] - 1
+            duration = x.x[1]
+        T_start = x.x[0]
         self.res = x
-        return get_prop_per_gen(self.k1_sampled, x.x[1]), x.x[0], x.x[1], x.cost
+        return get_prop_per_gen(self.k1_sampled, duration), T_start, T_end, x.cost
 
     def metr_cont_discr_1(self, T_start, dur, ppg):
         T_start = T_start[0]

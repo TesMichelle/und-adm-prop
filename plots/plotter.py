@@ -33,7 +33,8 @@ def estimationBoxPlot(prefix='mom_sim/res',
                       figsize=(6, 6),
                       T_start=[2, 5, 10],
                       duration=[2, 5, 10],
-                      ppg='002',
+                      ppg=None,
+                      total_s='02',
                       sel=1,
                       xlabel='xlabel',
                       ylabel='ylabel',
@@ -42,11 +43,13 @@ def estimationBoxPlot(prefix='mom_sim/res',
                       showmeans=True
                       ):
     fig, ax = plt.subplots(figsize=figsize)
-
+    if total_s != None:
+        ppg = total_s
     values = [[ppg], T_start, duration]
 
     rng = np.random.default_rng(seed=12456161)
 
+    width = 1/3 * len(duration)
 
     colors = ['#'+'{:06X}'.format(int(x)) for x
               in rng.uniform(0, 16*16*16*16*16*16-1, size=len(duration))]
@@ -54,7 +57,7 @@ def estimationBoxPlot(prefix='mom_sim/res',
     for i in range(len(T_start)):
         for j in range(len(duration)):
             r = np.loadtxt(prefix+f'_{ppg}_{T_start[i]}_{duration[j]}.txt')
-            bp = ax.boxplot(r[:, sel], positions=[0.2 + i + 0.3*j],
+            bp = ax.boxplot(r[:, sel], positions=[width/4 + width*i + 0.9*j*width/len(duration)],
                        patch_artist=True, showmeans=showmeans)
             for median in bp['medians']:
                 median.set_color(colors[j])
@@ -80,9 +83,13 @@ def estimationBoxPlot(prefix='mom_sim/res',
     legend = ax.legend(handles=patches, ncol=1, fontsize=15,
                        edgecolor='black', fancybox=False, loc='upper left')
 
+    if total_s != None:
+        ppg = list(1 - (1 - int(total_s)/100)**(1/np.array(duration)))
+    print(ppg)
+
     ax.grid(axis='y')
     if sel == 0:
-        yticks = [int(ppg)/100]
+        yticks = ppg
     if sel == 1:
         yticks = T_start
     if sel == 2:
@@ -91,9 +98,9 @@ def estimationBoxPlot(prefix='mom_sim/res',
         ylim = 2*yticks[-1]
     ax.set_yticks(yticks+[ylim])
     ax.set_ylim(0, ylim)
-    ax.set_xticks([(2*x-1)/2 for x in range(1, len(T_start)+1)])
+    ax.set_xticks([width/4 + width*0.9/len(duration)*(len(duration)-1)/2 + x*width for x in range(0, len(T_start))])
     ax.set_xticklabels(T_start)
-    ax.set_xlim(0, len(T_start))
+    ax.set_xlim(0, width*len(T_start)+0.125*width)
     ax.set_title(title)
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)

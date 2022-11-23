@@ -2010,8 +2010,8 @@ static double __pyx_f_7calcmom_getd(double, double, double, double); /*proto*/
 static double __pyx_f_7calcmom_getdiscr(double, double, double, double); /*proto*/
 static double __pyx_f_7calcmom_getroot1(double, double, double, double); /*proto*/
 static double __pyx_f_7calcmom_getroot2(double, double, double, double); /*proto*/
-static double __pyx_f_7calcmom_getvn2(double, double, double, double); /*proto*/
-static double __pyx_f_7calcmom_getvn1(double, double, double, double); /*proto*/
+static double __pyx_f_7calcmom_getvn2(double, double, double, double, double, double, double, double, double, double, double, double, double, double, double, double); /*proto*/
+static double __pyx_f_7calcmom_getvn1(double, double, double, double, double, double, double, double, double, double, double, double, double, double, double, double); /*proto*/
 static double __pyx_f_7calcmom_fun(double, double, double, double, double, double); /*proto*/
 static PyObject *__Pyx_CFunc_double____double____double____double____double____double____double___to_py(double (*)(double, double, double, double, double, double)); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
@@ -4498,162 +4498,32 @@ static double __pyx_f_7calcmom_getroot2(double __pyx_v_a, double __pyx_v_b, doub
 /* "calculate_moments.pyx":72
  * 
  * @cython.cdivision(True)
- * cdef double getvn2(double sg, double g, double length, double N):             # <<<<<<<<<<<<<<
- * 
- *     cdef double n = g
+ * cdef double getvn2(             # <<<<<<<<<<<<<<
+ *         double sg, double g, double length,
+ *         double a, double b, double c, double d,
  */
 
-static double __pyx_f_7calcmom_getvn2(double __pyx_v_sg, double __pyx_v_g, double __pyx_v_length, double __pyx_v_N) {
-  double __pyx_v_n;
-  double __pyx_v_ll;
-  double __pyx_v_ldl;
-  double __pyx_v_a;
-  double __pyx_v_b;
-  double __pyx_v_c;
-  double __pyx_v_d;
-  double __pyx_v_discr;
-  double __pyx_v_v00;
-  double __pyx_v_v01;
-  double __pyx_v_r1;
-  double __pyx_v_r2;
-  double __pyx_v_dr;
+static double __pyx_f_7calcmom_getvn2(CYTHON_UNUSED double __pyx_v_sg, double __pyx_v_g, CYTHON_UNUSED double __pyx_v_length, double __pyx_v_a, CYTHON_UNUSED double __pyx_v_b, double __pyx_v_c, double __pyx_v_d, CYTHON_UNUSED double __pyx_v_ll, CYTHON_UNUSED double __pyx_v_ldl, double __pyx_v_discr, double __pyx_v_dr, double __pyx_v_r1, double __pyx_v_r2, double __pyx_v_v00, double __pyx_v_v01, CYTHON_UNUSED double __pyx_v_N) {
   double __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("getvn2", 0);
 
-  /* "calculate_moments.pyx":74
- * cdef double getvn2(double sg, double g, double length, double N):
- * 
- *     cdef double n = g             # <<<<<<<<<<<<<<
- * 
- *     cdef double ll = (1 + exp(-2*length))/2
- */
-  __pyx_v_n = __pyx_v_g;
-
-  /* "calculate_moments.pyx":76
- *     cdef double n = g
- * 
- *     cdef double ll = (1 + exp(-2*length))/2             # <<<<<<<<<<<<<<
- *     cdef double ldl = (1 - exp(-2*length))/2
- * 
- */
-  __pyx_v_ll = ((1.0 + exp((-2.0 * __pyx_v_length))) / 2.0);
-
-  /* "calculate_moments.pyx":77
- * 
- *     cdef double ll = (1 + exp(-2*length))/2
- *     cdef double ldl = (1 - exp(-2*length))/2             # <<<<<<<<<<<<<<
- * 
- *     cdef double a = geta(N, ll, ldl, sg)
- */
-  __pyx_v_ldl = ((1.0 - exp((-2.0 * __pyx_v_length))) / 2.0);
-
-  /* "calculate_moments.pyx":79
- *     cdef double ldl = (1 - exp(-2*length))/2
- * 
- *     cdef double a = geta(N, ll, ldl, sg)             # <<<<<<<<<<<<<<
- *     cdef double b = getb(N, ll, ldl, sg)
- *     cdef double c = getc(N, ll, ldl, sg)
- */
-  __pyx_v_a = __pyx_f_7calcmom_geta(__pyx_v_N, __pyx_v_ll, __pyx_v_ldl, __pyx_v_sg);
-
-  /* "calculate_moments.pyx":80
- * 
- *     cdef double a = geta(N, ll, ldl, sg)
- *     cdef double b = getb(N, ll, ldl, sg)             # <<<<<<<<<<<<<<
- *     cdef double c = getc(N, ll, ldl, sg)
- *     cdef double d = getd(N, ll, ldl, sg)
- */
-  __pyx_v_b = __pyx_f_7calcmom_getb(__pyx_v_N, __pyx_v_ll, __pyx_v_ldl, __pyx_v_sg);
-
-  /* "calculate_moments.pyx":81
- *     cdef double a = geta(N, ll, ldl, sg)
- *     cdef double b = getb(N, ll, ldl, sg)
- *     cdef double c = getc(N, ll, ldl, sg)             # <<<<<<<<<<<<<<
- *     cdef double d = getd(N, ll, ldl, sg)
- * 
- */
-  __pyx_v_c = __pyx_f_7calcmom_getc(__pyx_v_N, __pyx_v_ll, __pyx_v_ldl, __pyx_v_sg);
-
-  /* "calculate_moments.pyx":82
- *     cdef double b = getb(N, ll, ldl, sg)
- *     cdef double c = getc(N, ll, ldl, sg)
- *     cdef double d = getd(N, ll, ldl, sg)             # <<<<<<<<<<<<<<
- * 
- *     cdef double discr = getdiscr(a, b, c, d)
- */
-  __pyx_v_d = __pyx_f_7calcmom_getd(__pyx_v_N, __pyx_v_ll, __pyx_v_ldl, __pyx_v_sg);
-
-  /* "calculate_moments.pyx":84
- *     cdef double d = getd(N, ll, ldl, sg)
- * 
- *     cdef double discr = getdiscr(a, b, c, d)             # <<<<<<<<<<<<<<
- * 
- *     cdef double v00 = 1-sg
- */
-  __pyx_v_discr = __pyx_f_7calcmom_getdiscr(__pyx_v_a, __pyx_v_b, __pyx_v_c, __pyx_v_d);
-
-  /* "calculate_moments.pyx":86
- *     cdef double discr = getdiscr(a, b, c, d)
- * 
- *     cdef double v00 = 1-sg             # <<<<<<<<<<<<<<
- *     cdef double v01 = (1-sg)*(1-sg)
- * 
- */
-  __pyx_v_v00 = (1.0 - __pyx_v_sg);
-
-  /* "calculate_moments.pyx":87
- * 
- *     cdef double v00 = 1-sg
- *     cdef double v01 = (1-sg)*(1-sg)             # <<<<<<<<<<<<<<
- * 
- *     cdef double r1 = getroot1(a, b, c, d)
- */
-  __pyx_v_v01 = ((1.0 - __pyx_v_sg) * (1.0 - __pyx_v_sg));
-
-  /* "calculate_moments.pyx":89
- *     cdef double v01 = (1-sg)*(1-sg)
- * 
- *     cdef double r1 = getroot1(a, b, c, d)             # <<<<<<<<<<<<<<
- *     cdef double r2 = getroot2(a, b, c, d)
- *     cdef double dr = pow(r1, n) - pow(r2, n)
- */
-  __pyx_v_r1 = __pyx_f_7calcmom_getroot1(__pyx_v_a, __pyx_v_b, __pyx_v_c, __pyx_v_d);
-
-  /* "calculate_moments.pyx":90
- * 
- *     cdef double r1 = getroot1(a, b, c, d)
- *     cdef double r2 = getroot2(a, b, c, d)             # <<<<<<<<<<<<<<
- *     cdef double dr = pow(r1, n) - pow(r2, n)
- *     return 0.5*(-2*c*(dr)*v00+((a-d)*dr+discr*(r1**n+r2**n))*v01)/ discr
- */
-  __pyx_v_r2 = __pyx_f_7calcmom_getroot2(__pyx_v_a, __pyx_v_b, __pyx_v_c, __pyx_v_d);
-
-  /* "calculate_moments.pyx":91
- *     cdef double r1 = getroot1(a, b, c, d)
- *     cdef double r2 = getroot2(a, b, c, d)
- *     cdef double dr = pow(r1, n) - pow(r2, n)             # <<<<<<<<<<<<<<
- *     return 0.5*(-2*c*(dr)*v00+((a-d)*dr+discr*(r1**n+r2**n))*v01)/ discr
- * 
- */
-  __pyx_v_dr = (pow(__pyx_v_r1, __pyx_v_n) - pow(__pyx_v_r2, __pyx_v_n));
-
-  /* "calculate_moments.pyx":92
- *     cdef double r2 = getroot2(a, b, c, d)
- *     cdef double dr = pow(r1, n) - pow(r2, n)
- *     return 0.5*(-2*c*(dr)*v00+((a-d)*dr+discr*(r1**n+r2**n))*v01)/ discr             # <<<<<<<<<<<<<<
+  /* "calculate_moments.pyx":78
+ *         double r1, double r2, double v00, double v01,
+ *         double N):
+ *     return 0.5*(-2*c*(dr)*v00+((a-d)*dr+discr*(r1**g+r2**g))*v01)/ discr             # <<<<<<<<<<<<<<
  * 
  * @cython.cdivision(True)
  */
-  __pyx_r = ((0.5 * ((((-2.0 * __pyx_v_c) * __pyx_v_dr) * __pyx_v_v00) + ((((__pyx_v_a - __pyx_v_d) * __pyx_v_dr) + (__pyx_v_discr * (pow(__pyx_v_r1, __pyx_v_n) + pow(__pyx_v_r2, __pyx_v_n)))) * __pyx_v_v01))) / __pyx_v_discr);
+  __pyx_r = ((0.5 * ((((-2.0 * __pyx_v_c) * __pyx_v_dr) * __pyx_v_v00) + ((((__pyx_v_a - __pyx_v_d) * __pyx_v_dr) + (__pyx_v_discr * (pow(__pyx_v_r1, __pyx_v_g) + pow(__pyx_v_r2, __pyx_v_g)))) * __pyx_v_v01))) / __pyx_v_discr);
   goto __pyx_L0;
 
   /* "calculate_moments.pyx":72
  * 
  * @cython.cdivision(True)
- * cdef double getvn2(double sg, double g, double length, double N):             # <<<<<<<<<<<<<<
- * 
- *     cdef double n = g
+ * cdef double getvn2(             # <<<<<<<<<<<<<<
+ *         double sg, double g, double length,
+ *         double a, double b, double c, double d,
  */
 
   /* function exit code */
@@ -4662,16 +4532,53 @@ static double __pyx_f_7calcmom_getvn2(double __pyx_v_sg, double __pyx_v_g, doubl
   return __pyx_r;
 }
 
-/* "calculate_moments.pyx":95
+/* "calculate_moments.pyx":81
  * 
  * @cython.cdivision(True)
- * cdef double getvn1(double sg, double g, double length, double N):             # <<<<<<<<<<<<<<
- * 
- *     cdef double n = g
+ * cdef double getvn1(             # <<<<<<<<<<<<<<
+ *         double sg, double g, double length,
+ *         double a, double b, double c, double d,
  */
 
-static double __pyx_f_7calcmom_getvn1(double __pyx_v_sg, double __pyx_v_g, double __pyx_v_length, double __pyx_v_N) {
-  double __pyx_v_n;
+static double __pyx_f_7calcmom_getvn1(CYTHON_UNUSED double __pyx_v_sg, double __pyx_v_g, CYTHON_UNUSED double __pyx_v_length, double __pyx_v_a, double __pyx_v_b, CYTHON_UNUSED double __pyx_v_c, double __pyx_v_d, CYTHON_UNUSED double __pyx_v_ll, CYTHON_UNUSED double __pyx_v_ldl, double __pyx_v_discr, double __pyx_v_dr, double __pyx_v_r1, double __pyx_v_r2, double __pyx_v_v00, double __pyx_v_v01, CYTHON_UNUSED double __pyx_v_N) {
+  double __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("getvn1", 0);
+
+  /* "calculate_moments.pyx":87
+ *         double r1, double r2, double v00, double v01,
+ *         double N):
+ *     return 0.5 * (discr*v00*(r1**g+r2**g) + (d - a)*dr*v00 - 2*b*v01*dr) / discr             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = ((0.5 * ((((__pyx_v_discr * __pyx_v_v00) * (pow(__pyx_v_r1, __pyx_v_g) + pow(__pyx_v_r2, __pyx_v_g))) + (((__pyx_v_d - __pyx_v_a) * __pyx_v_dr) * __pyx_v_v00)) - (((2.0 * __pyx_v_b) * __pyx_v_v01) * __pyx_v_dr))) / __pyx_v_discr);
+  goto __pyx_L0;
+
+  /* "calculate_moments.pyx":81
+ * 
+ * @cython.cdivision(True)
+ * cdef double getvn1(             # <<<<<<<<<<<<<<
+ *         double sg, double g, double length,
+ *         double a, double b, double c, double d,
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "calculate_moments.pyx":90
+ * 
+ * 
+ * cdef double fun(double l, double ls, double s, double gs, double dur, double N):             # <<<<<<<<<<<<<<
+ *     length = l - ls
+ * 
+ */
+
+static double __pyx_f_7calcmom_fun(double __pyx_v_l, double __pyx_v_ls, double __pyx_v_s, double __pyx_v_gs, double __pyx_v_dur, double __pyx_v_N) {
+  double __pyx_v_length;
   double __pyx_v_ll;
   double __pyx_v_ldl;
   double __pyx_v_a;
@@ -4679,26 +4586,26 @@ static double __pyx_f_7calcmom_getvn1(double __pyx_v_sg, double __pyx_v_g, doubl
   double __pyx_v_c;
   double __pyx_v_d;
   double __pyx_v_discr;
-  double __pyx_v_v00;
-  double __pyx_v_v01;
   double __pyx_v_r1;
   double __pyx_v_r2;
+  double __pyx_v_v00;
+  double __pyx_v_v01;
   double __pyx_v_dr;
   double __pyx_r;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("getvn1", 0);
+  __Pyx_RefNannySetupContext("fun", 0);
 
-  /* "calculate_moments.pyx":97
- * cdef double getvn1(double sg, double g, double length, double N):
+  /* "calculate_moments.pyx":91
  * 
- *     cdef double n = g             # <<<<<<<<<<<<<<
+ * cdef double fun(double l, double ls, double s, double gs, double dur, double N):
+ *     length = l - ls             # <<<<<<<<<<<<<<
  * 
  *     cdef double ll = (1 + exp(-2*length))/2
  */
-  __pyx_v_n = __pyx_v_g;
+  __pyx_v_length = (__pyx_v_l - __pyx_v_ls);
 
-  /* "calculate_moments.pyx":99
- *     cdef double n = g
+  /* "calculate_moments.pyx":93
+ *     length = l - ls
  * 
  *     cdef double ll = (1 + exp(-2*length))/2             # <<<<<<<<<<<<<<
  *     cdef double ldl = (1 - exp(-2*length))/2
@@ -4706,168 +4613,121 @@ static double __pyx_f_7calcmom_getvn1(double __pyx_v_sg, double __pyx_v_g, doubl
  */
   __pyx_v_ll = ((1.0 + exp((-2.0 * __pyx_v_length))) / 2.0);
 
-  /* "calculate_moments.pyx":100
+  /* "calculate_moments.pyx":94
  * 
  *     cdef double ll = (1 + exp(-2*length))/2
  *     cdef double ldl = (1 - exp(-2*length))/2             # <<<<<<<<<<<<<<
  * 
- *     cdef double a = geta(N, ll, ldl, sg)
+ *     cdef double a = geta(N, ll, ldl, s)
  */
   __pyx_v_ldl = ((1.0 - exp((-2.0 * __pyx_v_length))) / 2.0);
 
-  /* "calculate_moments.pyx":102
+  /* "calculate_moments.pyx":96
  *     cdef double ldl = (1 - exp(-2*length))/2
  * 
- *     cdef double a = geta(N, ll, ldl, sg)             # <<<<<<<<<<<<<<
- *     cdef double b = getb(N, ll, ldl, sg)
- *     cdef double c = getc(N, ll, ldl, sg)
+ *     cdef double a = geta(N, ll, ldl, s)             # <<<<<<<<<<<<<<
+ *     cdef double b = getb(N, ll, ldl, s)
+ *     cdef double c = getc(N, ll, ldl, s)
  */
-  __pyx_v_a = __pyx_f_7calcmom_geta(__pyx_v_N, __pyx_v_ll, __pyx_v_ldl, __pyx_v_sg);
+  __pyx_v_a = __pyx_f_7calcmom_geta(__pyx_v_N, __pyx_v_ll, __pyx_v_ldl, __pyx_v_s);
 
-  /* "calculate_moments.pyx":103
+  /* "calculate_moments.pyx":97
  * 
- *     cdef double a = geta(N, ll, ldl, sg)
- *     cdef double b = getb(N, ll, ldl, sg)             # <<<<<<<<<<<<<<
- *     cdef double c = getc(N, ll, ldl, sg)
- *     cdef double d = getd(N, ll, ldl, sg)
+ *     cdef double a = geta(N, ll, ldl, s)
+ *     cdef double b = getb(N, ll, ldl, s)             # <<<<<<<<<<<<<<
+ *     cdef double c = getc(N, ll, ldl, s)
+ *     cdef double d = getd(N, ll, ldl, s)
  */
-  __pyx_v_b = __pyx_f_7calcmom_getb(__pyx_v_N, __pyx_v_ll, __pyx_v_ldl, __pyx_v_sg);
+  __pyx_v_b = __pyx_f_7calcmom_getb(__pyx_v_N, __pyx_v_ll, __pyx_v_ldl, __pyx_v_s);
 
-  /* "calculate_moments.pyx":104
- *     cdef double a = geta(N, ll, ldl, sg)
- *     cdef double b = getb(N, ll, ldl, sg)
- *     cdef double c = getc(N, ll, ldl, sg)             # <<<<<<<<<<<<<<
- *     cdef double d = getd(N, ll, ldl, sg)
+  /* "calculate_moments.pyx":98
+ *     cdef double a = geta(N, ll, ldl, s)
+ *     cdef double b = getb(N, ll, ldl, s)
+ *     cdef double c = getc(N, ll, ldl, s)             # <<<<<<<<<<<<<<
+ *     cdef double d = getd(N, ll, ldl, s)
  * 
  */
-  __pyx_v_c = __pyx_f_7calcmom_getc(__pyx_v_N, __pyx_v_ll, __pyx_v_ldl, __pyx_v_sg);
+  __pyx_v_c = __pyx_f_7calcmom_getc(__pyx_v_N, __pyx_v_ll, __pyx_v_ldl, __pyx_v_s);
 
-  /* "calculate_moments.pyx":105
- *     cdef double b = getb(N, ll, ldl, sg)
- *     cdef double c = getc(N, ll, ldl, sg)
- *     cdef double d = getd(N, ll, ldl, sg)             # <<<<<<<<<<<<<<
+  /* "calculate_moments.pyx":99
+ *     cdef double b = getb(N, ll, ldl, s)
+ *     cdef double c = getc(N, ll, ldl, s)
+ *     cdef double d = getd(N, ll, ldl, s)             # <<<<<<<<<<<<<<
  * 
  *     cdef double discr = getdiscr(a, b, c, d)
  */
-  __pyx_v_d = __pyx_f_7calcmom_getd(__pyx_v_N, __pyx_v_ll, __pyx_v_ldl, __pyx_v_sg);
+  __pyx_v_d = __pyx_f_7calcmom_getd(__pyx_v_N, __pyx_v_ll, __pyx_v_ldl, __pyx_v_s);
 
-  /* "calculate_moments.pyx":107
- *     cdef double d = getd(N, ll, ldl, sg)
+  /* "calculate_moments.pyx":101
+ *     cdef double d = getd(N, ll, ldl, s)
  * 
  *     cdef double discr = getdiscr(a, b, c, d)             # <<<<<<<<<<<<<<
  * 
- *     cdef double v00 = 1-sg
+ *     cdef double r1 = getroot1(a, b, c, d)
  */
   __pyx_v_discr = __pyx_f_7calcmom_getdiscr(__pyx_v_a, __pyx_v_b, __pyx_v_c, __pyx_v_d);
 
-  /* "calculate_moments.pyx":109
+  /* "calculate_moments.pyx":103
  *     cdef double discr = getdiscr(a, b, c, d)
  * 
- *     cdef double v00 = 1-sg             # <<<<<<<<<<<<<<
- *     cdef double v01 = (1-sg)*(1-sg)
+ *     cdef double r1 = getroot1(a, b, c, d)             # <<<<<<<<<<<<<<
+ *     cdef double r2 = getroot2(a, b, c, d)
  * 
- */
-  __pyx_v_v00 = (1.0 - __pyx_v_sg);
-
-  /* "calculate_moments.pyx":110
- * 
- *     cdef double v00 = 1-sg
- *     cdef double v01 = (1-sg)*(1-sg)             # <<<<<<<<<<<<<<
- * 
- *     r1 = getroot1(a, b, c, d)
- */
-  __pyx_v_v01 = ((1.0 - __pyx_v_sg) * (1.0 - __pyx_v_sg));
-
-  /* "calculate_moments.pyx":112
- *     cdef double v01 = (1-sg)*(1-sg)
- * 
- *     r1 = getroot1(a, b, c, d)             # <<<<<<<<<<<<<<
- *     r2 = getroot2(a, b, c, d)
- *     dr = r1**n - r2**n
  */
   __pyx_v_r1 = __pyx_f_7calcmom_getroot1(__pyx_v_a, __pyx_v_b, __pyx_v_c, __pyx_v_d);
 
-  /* "calculate_moments.pyx":113
+  /* "calculate_moments.pyx":104
  * 
- *     r1 = getroot1(a, b, c, d)
- *     r2 = getroot2(a, b, c, d)             # <<<<<<<<<<<<<<
- *     dr = r1**n - r2**n
- *     return 0.5 * (discr*v00*(r1**n+r2**n) + (d - a)*dr*v00 - 2*b*v01*dr) / discr
+ *     cdef double r1 = getroot1(a, b, c, d)
+ *     cdef double r2 = getroot2(a, b, c, d)             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double v00 = 1-s
  */
   __pyx_v_r2 = __pyx_f_7calcmom_getroot2(__pyx_v_a, __pyx_v_b, __pyx_v_c, __pyx_v_d);
 
-  /* "calculate_moments.pyx":114
- *     r1 = getroot1(a, b, c, d)
- *     r2 = getroot2(a, b, c, d)
- *     dr = r1**n - r2**n             # <<<<<<<<<<<<<<
- *     return 0.5 * (discr*v00*(r1**n+r2**n) + (d - a)*dr*v00 - 2*b*v01*dr) / discr
+  /* "calculate_moments.pyx":106
+ *     cdef double r2 = getroot2(a, b, c, d)
+ * 
+ *     cdef double v00 = 1-s             # <<<<<<<<<<<<<<
+ *     cdef double v01 = (1-s)*(1-s)
  * 
  */
-  __pyx_v_dr = (pow(__pyx_v_r1, __pyx_v_n) - pow(__pyx_v_r2, __pyx_v_n));
+  __pyx_v_v00 = (1.0 - __pyx_v_s);
+
+  /* "calculate_moments.pyx":107
+ * 
+ *     cdef double v00 = 1-s
+ *     cdef double v01 = (1-s)*(1-s)             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double dr = pow(r1, dur-1) - pow(r2, dur-1)
+ */
+  __pyx_v_v01 = ((1.0 - __pyx_v_s) * (1.0 - __pyx_v_s));
+
+  /* "calculate_moments.pyx":109
+ *     cdef double v01 = (1-s)*(1-s)
+ * 
+ *     cdef double dr = pow(r1, dur-1) - pow(r2, dur-1)             # <<<<<<<<<<<<<<
+ * 
+ *     return (getvn1(s, dur-1, length, a, b, c, d, ll,
+ */
+  __pyx_v_dr = (pow(__pyx_v_r1, (__pyx_v_dur - 1.0)) - pow(__pyx_v_r2, (__pyx_v_dur - 1.0)));
 
   /* "calculate_moments.pyx":115
- *     r2 = getroot2(a, b, c, d)
- *     dr = r1**n - r2**n
- *     return 0.5 * (discr*v00*(r1**n+r2**n) + (d - a)*dr*v00 - 2*b*v01*dr) / discr             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __pyx_r = ((0.5 * ((((__pyx_v_discr * __pyx_v_v00) * (pow(__pyx_v_r1, __pyx_v_n) + pow(__pyx_v_r2, __pyx_v_n))) + (((__pyx_v_d - __pyx_v_a) * __pyx_v_dr) * __pyx_v_v00)) - (((2.0 * __pyx_v_b) * __pyx_v_v01) * __pyx_v_dr))) / __pyx_v_discr);
-  goto __pyx_L0;
-
-  /* "calculate_moments.pyx":95
- * 
- * @cython.cdivision(True)
- * cdef double getvn1(double sg, double g, double length, double N):             # <<<<<<<<<<<<<<
- * 
- *     cdef double n = g
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "calculate_moments.pyx":118
- * 
- * 
- * cdef double fun(double l, double ls, double s, double gs, double dur, double N):             # <<<<<<<<<<<<<<
- *     length = l - ls
- *     return (getvn1(s, dur-1, length, N) - getvn2(s, dur-1, length, N)) * pow(0.5 * (1 + exp(-2*length)), gs)
- */
-
-static double __pyx_f_7calcmom_fun(double __pyx_v_l, double __pyx_v_ls, double __pyx_v_s, double __pyx_v_gs, double __pyx_v_dur, double __pyx_v_N) {
-  double __pyx_v_length;
-  double __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("fun", 0);
-
-  /* "calculate_moments.pyx":119
- * 
- * cdef double fun(double l, double ls, double s, double gs, double dur, double N):
- *     length = l - ls             # <<<<<<<<<<<<<<
- *     return (getvn1(s, dur-1, length, N) - getvn2(s, dur-1, length, N)) * pow(0.5 * (1 + exp(-2*length)), gs)
- * # cdef double fun(double l, double ls, double s, double gs, double dur):
- */
-  __pyx_v_length = (__pyx_v_l - __pyx_v_ls);
-
-  /* "calculate_moments.pyx":120
- * cdef double fun(double l, double ls, double s, double gs, double dur, double N):
- *     length = l - ls
- *     return (getvn1(s, dur-1, length, N) - getvn2(s, dur-1, length, N)) * pow(0.5 * (1 + exp(-2*length)), gs)             # <<<<<<<<<<<<<<
+ *           - getvn2(s, dur-1, length, a, b, c, d, ll,
+ *                    ldl, discr, dr, r1, r2, v00, v01, N)) \
+ *           * pow(ll, gs)             # <<<<<<<<<<<<<<
  * # cdef double fun(double l, double ls, double s, double gs, double dur):
  * #     length = abs(l - ls)
  */
-  __pyx_r = ((__pyx_f_7calcmom_getvn1(__pyx_v_s, (__pyx_v_dur - 1.0), __pyx_v_length, __pyx_v_N) - __pyx_f_7calcmom_getvn2(__pyx_v_s, (__pyx_v_dur - 1.0), __pyx_v_length, __pyx_v_N)) * pow((0.5 * (1.0 + exp((-2.0 * __pyx_v_length)))), __pyx_v_gs));
+  __pyx_r = ((__pyx_f_7calcmom_getvn1(__pyx_v_s, (__pyx_v_dur - 1.0), __pyx_v_length, __pyx_v_a, __pyx_v_b, __pyx_v_c, __pyx_v_d, __pyx_v_ll, __pyx_v_ldl, __pyx_v_discr, __pyx_v_dr, __pyx_v_r1, __pyx_v_r2, __pyx_v_v00, __pyx_v_v01, __pyx_v_N) - __pyx_f_7calcmom_getvn2(__pyx_v_s, (__pyx_v_dur - 1.0), __pyx_v_length, __pyx_v_a, __pyx_v_b, __pyx_v_c, __pyx_v_d, __pyx_v_ll, __pyx_v_ldl, __pyx_v_discr, __pyx_v_dr, __pyx_v_r1, __pyx_v_r2, __pyx_v_v00, __pyx_v_v01, __pyx_v_N)) * pow(__pyx_v_ll, __pyx_v_gs));
   goto __pyx_L0;
 
-  /* "calculate_moments.pyx":118
+  /* "calculate_moments.pyx":90
  * 
  * 
  * cdef double fun(double l, double ls, double s, double gs, double dur, double N):             # <<<<<<<<<<<<<<
  *     length = l - ls
- *     return (getvn1(s, dur-1, length, N) - getvn2(s, dur-1, length, N)) * pow(0.5 * (1 + exp(-2*length)), gs)
+ * 
  */
 
   /* function exit code */
@@ -4876,7 +4736,7 @@ static double __pyx_f_7calcmom_fun(double __pyx_v_l, double __pyx_v_ls, double _
   return __pyx_r;
 }
 
-/* "calculate_moments.pyx":129
+/* "calculate_moments.pyx":124
  * @cython.wraparound(False)
  * @cython.boundscheck(False)
  * def fun3(double l, double ls, double lss,             # <<<<<<<<<<<<<<
@@ -4937,47 +4797,47 @@ static PyObject *__pyx_pw_7calcmom_9fun3(PyObject *__pyx_self, PyObject *__pyx_a
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_ls)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("fun3", 1, 8, 8, 1); __PYX_ERR(0, 129, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("fun3", 1, 8, 8, 1); __PYX_ERR(0, 124, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_lss)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("fun3", 1, 8, 8, 2); __PYX_ERR(0, 129, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("fun3", 1, 8, 8, 2); __PYX_ERR(0, 124, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_gs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("fun3", 1, 8, 8, 3); __PYX_ERR(0, 129, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("fun3", 1, 8, 8, 3); __PYX_ERR(0, 124, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_dur)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("fun3", 1, 8, 8, 4); __PYX_ERR(0, 129, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("fun3", 1, 8, 8, 4); __PYX_ERR(0, 124, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_L)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("fun3", 1, 8, 8, 5); __PYX_ERR(0, 129, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("fun3", 1, 8, 8, 5); __PYX_ERR(0, 124, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
         if (likely((values[6] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_D)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("fun3", 1, 8, 8, 6); __PYX_ERR(0, 129, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("fun3", 1, 8, 8, 6); __PYX_ERR(0, 124, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  7:
         if (likely((values[7] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_v0)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("fun3", 1, 8, 8, 7); __PYX_ERR(0, 129, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("fun3", 1, 8, 8, 7); __PYX_ERR(0, 124, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "fun3") < 0)) __PYX_ERR(0, 129, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "fun3") < 0)) __PYX_ERR(0, 124, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 8) {
       goto __pyx_L5_argtuple_error;
@@ -4991,18 +4851,18 @@ static PyObject *__pyx_pw_7calcmom_9fun3(PyObject *__pyx_self, PyObject *__pyx_a
       values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
       values[7] = PyTuple_GET_ITEM(__pyx_args, 7);
     }
-    __pyx_v_l = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_l == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 129, __pyx_L3_error)
-    __pyx_v_ls = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_ls == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 129, __pyx_L3_error)
-    __pyx_v_lss = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_lss == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 129, __pyx_L3_error)
-    __pyx_v_gs = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_gs == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 130, __pyx_L3_error)
-    __pyx_v_dur = __pyx_PyFloat_AsDouble(values[4]); if (unlikely((__pyx_v_dur == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 130, __pyx_L3_error)
-    __pyx_v_L = __Pyx_PyObject_to_MemoryviewSlice_d_dc_double(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_L.memview)) __PYX_ERR(0, 131, __pyx_L3_error)
+    __pyx_v_l = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_l == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 124, __pyx_L3_error)
+    __pyx_v_ls = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_ls == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 124, __pyx_L3_error)
+    __pyx_v_lss = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_lss == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 124, __pyx_L3_error)
+    __pyx_v_gs = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_gs == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 125, __pyx_L3_error)
+    __pyx_v_dur = __pyx_PyFloat_AsDouble(values[4]); if (unlikely((__pyx_v_dur == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 125, __pyx_L3_error)
+    __pyx_v_L = __Pyx_PyObject_to_MemoryviewSlice_d_dc_double(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_L.memview)) __PYX_ERR(0, 126, __pyx_L3_error)
     __pyx_v_D = values[6];
     __pyx_v_v0 = values[7];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("fun3", 1, 8, 8, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 129, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("fun3", 1, 8, 8, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 124, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("calcmom.fun3", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5051,7 +4911,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("fun3", 0);
 
-  /* "calculate_moments.pyx":133
+  /* "calculate_moments.pyx":128
  *          double[:, ::1] L, D, v0):
  *     # check all these probabilities
  *     cdef double d1 = abs(ls - l)             # <<<<<<<<<<<<<<
@@ -5060,7 +4920,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
  */
   __pyx_v_d1 = fabs((__pyx_v_ls - __pyx_v_l));
 
-  /* "calculate_moments.pyx":134
+  /* "calculate_moments.pyx":129
  *     # check all these probabilities
  *     cdef double d1 = abs(ls - l)
  *     cdef double d2 = abs(lss - l)             # <<<<<<<<<<<<<<
@@ -5069,7 +4929,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
  */
   __pyx_v_d2 = fabs((__pyx_v_lss - __pyx_v_l));
 
-  /* "calculate_moments.pyx":135
+  /* "calculate_moments.pyx":130
  *     cdef double d1 = abs(ls - l)
  *     cdef double d2 = abs(lss - l)
  *     cdef double d3 = abs(lss - ls)             # <<<<<<<<<<<<<<
@@ -5078,7 +4938,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
  */
   __pyx_v_d3 = fabs((__pyx_v_lss - __pyx_v_ls));
 
-  /* "calculate_moments.pyx":138
+  /* "calculate_moments.pyx":133
  * 
  *     # Haldane map function
  *     cdef double lls = (1 + exp(-2*d1)) / 2             # <<<<<<<<<<<<<<
@@ -5087,7 +4947,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
  */
   __pyx_v_lls = ((1.0 + exp((-2.0 * __pyx_v_d1))) / 2.0);
 
-  /* "calculate_moments.pyx":139
+  /* "calculate_moments.pyx":134
  *     # Haldane map function
  *     cdef double lls = (1 + exp(-2*d1)) / 2
  *     cdef double ldls = (1 - exp(-2*d1)) / 2             # <<<<<<<<<<<<<<
@@ -5096,35 +4956,35 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
  */
   __pyx_v_ldls = ((1.0 - exp((-2.0 * __pyx_v_d1))) / 2.0);
 
-  /* "calculate_moments.pyx":140
+  /* "calculate_moments.pyx":135
  *     cdef double lls = (1 + exp(-2*d1)) / 2
  *     cdef double ldls = (1 - exp(-2*d1)) / 2
  *     cdef double lsdlss = (1 - exp(-2*d3)) / 2             # <<<<<<<<<<<<<<
  *     cdef double lslss = (1 + exp(-2*d3)) / 2
- * #     THE SAME -
+ *     cdef double llslss = lls*lslss
  */
   __pyx_v_lsdlss = ((1.0 - exp((-2.0 * __pyx_v_d3))) / 2.0);
 
-  /* "calculate_moments.pyx":141
+  /* "calculate_moments.pyx":136
  *     cdef double ldls = (1 - exp(-2*d1)) / 2
  *     cdef double lsdlss = (1 - exp(-2*d3)) / 2
  *     cdef double lslss = (1 + exp(-2*d3)) / 2             # <<<<<<<<<<<<<<
- * #     THE SAME -
- * #     cdef double llslss = exp(-2*d2) + (1-exp(-2*d1))/2*exp(-2*d3) + exp(-2*d1)*(1-exp(-2*d3))/2 + (1 - exp(-2*d1))*(1 - exp(-2*d3))/4
+ *     cdef double llslss = lls*lslss
+ *     cdef double llsdlss = lls*lsdlss
  */
   __pyx_v_lslss = ((1.0 + exp((-2.0 * __pyx_v_d3))) / 2.0);
 
-  /* "calculate_moments.pyx":147
- * #     cdef double ldlslss = (1 - exp(-2*d1)) / 2 * exp(-2*d3) + (1 - exp(-2*d1))*(1 - exp(-2*d3))/4
- * #     cdef double ldlsdlss = ldls*lsdlss
+  /* "calculate_moments.pyx":137
+ *     cdef double lsdlss = (1 - exp(-2*d3)) / 2
+ *     cdef double lslss = (1 + exp(-2*d3)) / 2
  *     cdef double llslss = lls*lslss             # <<<<<<<<<<<<<<
  *     cdef double llsdlss = lls*lsdlss
  *     cdef double ldlslss = ldls*lslss
  */
   __pyx_v_llslss = (__pyx_v_lls * __pyx_v_lslss);
 
-  /* "calculate_moments.pyx":148
- * #     cdef double ldlsdlss = ldls*lsdlss
+  /* "calculate_moments.pyx":138
+ *     cdef double lslss = (1 + exp(-2*d3)) / 2
  *     cdef double llslss = lls*lslss
  *     cdef double llsdlss = lls*lsdlss             # <<<<<<<<<<<<<<
  *     cdef double ldlslss = ldls*lslss
@@ -5132,7 +4992,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
  */
   __pyx_v_llsdlss = (__pyx_v_lls * __pyx_v_lsdlss);
 
-  /* "calculate_moments.pyx":149
+  /* "calculate_moments.pyx":139
  *     cdef double llslss = lls*lslss
  *     cdef double llsdlss = lls*lsdlss
  *     cdef double ldlslss = ldls*lslss             # <<<<<<<<<<<<<<
@@ -5141,7 +5001,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
  */
   __pyx_v_ldlslss = (__pyx_v_ldls * __pyx_v_lslss);
 
-  /* "calculate_moments.pyx":150
+  /* "calculate_moments.pyx":140
  *     cdef double llsdlss = lls*lsdlss
  *     cdef double ldlslss = ldls*lslss
  *     cdef double ldlsdlss = ldls*lsdlss             # <<<<<<<<<<<<<<
@@ -5150,7 +5010,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
  */
   __pyx_v_ldlsdlss = (__pyx_v_ldls * __pyx_v_lsdlss);
 
-  /* "calculate_moments.pyx":151
+  /* "calculate_moments.pyx":141
  *     cdef double ldlslss = ldls*lslss
  *     cdef double ldlsdlss = ldls*lsdlss
  *     cdef double llss = llslss + ldlsdlss             # <<<<<<<<<<<<<<
@@ -5159,7 +5019,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
  */
   __pyx_v_llss = (__pyx_v_llslss + __pyx_v_ldlsdlss);
 
-  /* "calculate_moments.pyx":152
+  /* "calculate_moments.pyx":142
  *     cdef double ldlsdlss = ldls*lsdlss
  *     cdef double llss = llslss + ldlsdlss
  *     cdef double ldlss = 1 - (llslss + ldls*lsdlss)             # <<<<<<<<<<<<<<
@@ -5168,35 +5028,35 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
  */
   __pyx_v_ldlss = (1.0 - (__pyx_v_llslss + (__pyx_v_ldls * __pyx_v_lsdlss)));
 
-  /* "calculate_moments.pyx":155
+  /* "calculate_moments.pyx":145
  * 
  *     # my
  *     U = np.array([             # <<<<<<<<<<<<<<
  *         [llslss, ldlslss, ldlsdlss, llsdlss, 0],
  *         [0, lslss, 0, 0, lsdlss],
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 155, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 145, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 155, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 145, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "calculate_moments.pyx":156
+  /* "calculate_moments.pyx":146
  *     # my
  *     U = np.array([
  *         [llslss, ldlslss, ldlsdlss, llsdlss, 0],             # <<<<<<<<<<<<<<
  *         [0, lslss, 0, 0, lsdlss],
  *         [0, 0, llss, 0, ldlss],
  */
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_llslss); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 156, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_llslss); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_ldlslss); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 156, __pyx_L1_error)
+  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_ldlslss); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_ldlsdlss); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 156, __pyx_L1_error)
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_ldlsdlss); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_llsdlss); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 156, __pyx_L1_error)
+  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_llsdlss); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = PyList_New(5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 156, __pyx_L1_error)
+  __pyx_t_7 = PyList_New(5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_GIVEREF(__pyx_t_2);
   PyList_SET_ITEM(__pyx_t_7, 0, __pyx_t_2);
@@ -5214,18 +5074,18 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   __pyx_t_5 = 0;
   __pyx_t_6 = 0;
 
-  /* "calculate_moments.pyx":157
+  /* "calculate_moments.pyx":147
  *     U = np.array([
  *         [llslss, ldlslss, ldlsdlss, llsdlss, 0],
  *         [0, lslss, 0, 0, lsdlss],             # <<<<<<<<<<<<<<
  *         [0, 0, llss, 0, ldlss],
  *         [0, 0, 0, lls, ldls],
  */
-  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_lslss); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 157, __pyx_L1_error)
+  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_lslss); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_lsdlss); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 157, __pyx_L1_error)
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_lsdlss); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_4 = PyList_New(5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 157, __pyx_L1_error)
+  __pyx_t_4 = PyList_New(5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_INCREF(__pyx_int_0);
   __Pyx_GIVEREF(__pyx_int_0);
@@ -5243,18 +5103,18 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   __pyx_t_6 = 0;
   __pyx_t_5 = 0;
 
-  /* "calculate_moments.pyx":158
+  /* "calculate_moments.pyx":148
  *         [llslss, ldlslss, ldlsdlss, llsdlss, 0],
  *         [0, lslss, 0, 0, lsdlss],
  *         [0, 0, llss, 0, ldlss],             # <<<<<<<<<<<<<<
  *         [0, 0, 0, lls, ldls],
  *         [0, 0, 0, 0, 1]
  */
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_llss); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_llss); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_ldlss); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_ldlss); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_2 = PyList_New(5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_int_0);
   __Pyx_GIVEREF(__pyx_int_0);
@@ -5272,18 +5132,18 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   __pyx_t_5 = 0;
   __pyx_t_6 = 0;
 
-  /* "calculate_moments.pyx":159
+  /* "calculate_moments.pyx":149
  *         [0, lslss, 0, 0, lsdlss],
  *         [0, 0, llss, 0, ldlss],
  *         [0, 0, 0, lls, ldls],             # <<<<<<<<<<<<<<
  *         [0, 0, 0, 0, 1]
  *     ])
  */
-  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_lls); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_lls); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_ldls); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_ldls); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_8 = PyList_New(5); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_8 = PyList_New(5); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_INCREF(__pyx_int_0);
   __Pyx_GIVEREF(__pyx_int_0);
@@ -5301,14 +5161,14 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   __pyx_t_6 = 0;
   __pyx_t_5 = 0;
 
-  /* "calculate_moments.pyx":160
+  /* "calculate_moments.pyx":150
  *         [0, 0, llss, 0, ldlss],
  *         [0, 0, 0, lls, ldls],
  *         [0, 0, 0, 0, 1]             # <<<<<<<<<<<<<<
  *     ])
  * 
  */
-  __pyx_t_5 = PyList_New(5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_5 = PyList_New(5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 150, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_INCREF(__pyx_int_0);
   __Pyx_GIVEREF(__pyx_int_0);
@@ -5326,14 +5186,14 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   __Pyx_GIVEREF(__pyx_int_1);
   PyList_SET_ITEM(__pyx_t_5, 4, __pyx_int_1);
 
-  /* "calculate_moments.pyx":155
+  /* "calculate_moments.pyx":145
  * 
  *     # my
  *     U = np.array([             # <<<<<<<<<<<<<<
  *         [llslss, ldlslss, ldlsdlss, llsdlss, 0],
  *         [0, lslss, 0, 0, lsdlss],
  */
-  __pyx_t_6 = PyList_New(5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 155, __pyx_L1_error)
+  __pyx_t_6 = PyList_New(5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 145, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_7);
   PyList_SET_ITEM(__pyx_t_6, 0, __pyx_t_7);
@@ -5363,25 +5223,25 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_6) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_6);
   __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 155, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 145, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_U = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "calculate_moments.pyx":188
- *     # [0, 0, 0, 0, 1]
- *     # ])
+  /* "calculate_moments.pyx":153
+ *     ])
+ * 
  *     eigv = np.array([1, -1, -1, -1, 2], dtype=float)             # <<<<<<<<<<<<<<
  * 
  *     A = L @ U @ D
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 153, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyList_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_int_1);
   __Pyx_GIVEREF(__pyx_int_1);
@@ -5398,15 +5258,15 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
   PyList_SET_ITEM(__pyx_t_1, 4, __pyx_int_2);
-  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 153, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 188, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 188, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 153, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -5414,37 +5274,37 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   __pyx_v_eigv = __pyx_t_5;
   __pyx_t_5 = 0;
 
-  /* "calculate_moments.pyx":190
+  /* "calculate_moments.pyx":155
  *     eigv = np.array([1, -1, -1, -1, 2], dtype=float)
  * 
  *     A = L @ U @ D             # <<<<<<<<<<<<<<
  *     U, Q = np.linalg.eig(A)
  *     U = np.diag(U**(dur-1))
  */
-  __pyx_t_5 = __pyx_memoryview_fromslice(__pyx_v_L, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_t_5 = __pyx_memoryview_fromslice(__pyx_v_L, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 155, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_1 = __Pyx_PyNumber_MatrixMultiply(__pyx_t_5, __pyx_v_U); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyNumber_MatrixMultiply(__pyx_t_5, __pyx_v_U); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 155, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyNumber_MatrixMultiply(__pyx_t_1, __pyx_v_D); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyNumber_MatrixMultiply(__pyx_t_1, __pyx_v_D); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 155, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_A = __pyx_t_5;
   __pyx_t_5 = 0;
 
-  /* "calculate_moments.pyx":191
+  /* "calculate_moments.pyx":156
  * 
  *     A = L @ U @ D
  *     U, Q = np.linalg.eig(A)             # <<<<<<<<<<<<<<
  *     U = np.diag(U**(dur-1))
  *     Q_inv = np.linalg.solve(Q, np.eye(5))
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 191, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_linalg); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 191, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_linalg); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_eig); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 191, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_eig); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
@@ -5459,7 +5319,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   }
   __pyx_t_5 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_6, __pyx_v_A) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_A);
   __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 191, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if ((likely(PyTuple_CheckExact(__pyx_t_5))) || (PyList_CheckExact(__pyx_t_5))) {
@@ -5468,7 +5328,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 191, __pyx_L1_error)
+      __PYX_ERR(0, 156, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -5481,15 +5341,15 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
     __Pyx_INCREF(__pyx_t_1);
     __Pyx_INCREF(__pyx_t_6);
     #else
-    __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 191, __pyx_L1_error)
+    __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 191, __pyx_L1_error)
+    __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 156, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     #endif
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_3 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 191, __pyx_L1_error)
+    __pyx_t_3 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 156, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_t_9 = Py_TYPE(__pyx_t_3)->tp_iternext;
@@ -5497,7 +5357,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
     __Pyx_GOTREF(__pyx_t_1);
     index = 1; __pyx_t_6 = __pyx_t_9(__pyx_t_3); if (unlikely(!__pyx_t_6)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_6);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_3), 2) < 0) __PYX_ERR(0, 191, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_3), 2) < 0) __PYX_ERR(0, 156, __pyx_L1_error)
     __pyx_t_9 = NULL;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     goto __pyx_L4_unpacking_done;
@@ -5505,7 +5365,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_9 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 191, __pyx_L1_error)
+    __PYX_ERR(0, 156, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
   __Pyx_DECREF_SET(__pyx_v_U, __pyx_t_1);
@@ -5513,21 +5373,21 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   __pyx_v_Q = __pyx_t_6;
   __pyx_t_6 = 0;
 
-  /* "calculate_moments.pyx":192
+  /* "calculate_moments.pyx":157
  *     A = L @ U @ D
  *     U, Q = np.linalg.eig(A)
  *     U = np.diag(U**(dur-1))             # <<<<<<<<<<<<<<
  *     Q_inv = np.linalg.solve(Q, np.eye(5))
  *     return  (eigv @ Q) @ U @ (Q_inv @ v0) * pow(llslss, gs)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_diag); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_diag); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyFloat_FromDouble((__pyx_v_dur - 1.0)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __pyx_t_6 = PyFloat_FromDouble((__pyx_v_dur - 1.0)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_3 = PyNumber_Power(__pyx_v_U, __pyx_t_6, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Power(__pyx_v_U, __pyx_t_6, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
@@ -5543,29 +5403,29 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   __pyx_t_5 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_6, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3);
   __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 192, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF_SET(__pyx_v_U, __pyx_t_5);
   __pyx_t_5 = 0;
 
-  /* "calculate_moments.pyx":193
+  /* "calculate_moments.pyx":158
  *     U, Q = np.linalg.eig(A)
  *     U = np.diag(U**(dur-1))
  *     Q_inv = np.linalg.solve(Q, np.eye(5))             # <<<<<<<<<<<<<<
  *     return  (eigv @ Q) @ U @ (Q_inv @ v0) * pow(llslss, gs)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_linalg); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 193, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_linalg); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_solve); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_solve); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_eye); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 193, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_eye); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
@@ -5580,7 +5440,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   }
   __pyx_t_3 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_8, __pyx_t_6, __pyx_int_5) : __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_int_5);
   __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 193, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_t_8 = NULL;
@@ -5598,7 +5458,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_1)) {
     PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_v_Q, __pyx_t_3};
-    __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 193, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 158, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5607,14 +5467,14 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
     PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_v_Q, __pyx_t_3};
-    __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 193, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 158, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else
   #endif
   {
-    __pyx_t_6 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 158, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     if (__pyx_t_8) {
       __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -5625,7 +5485,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_10, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 193, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 158, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
@@ -5633,26 +5493,26 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   __pyx_v_Q_inv = __pyx_t_5;
   __pyx_t_5 = 0;
 
-  /* "calculate_moments.pyx":194
+  /* "calculate_moments.pyx":159
  *     U = np.diag(U**(dur-1))
  *     Q_inv = np.linalg.solve(Q, np.eye(5))
  *     return  (eigv @ Q) @ U @ (Q_inv @ v0) * pow(llslss, gs)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_5 = __Pyx_PyNumber_MatrixMultiply(__pyx_v_eigv, __pyx_v_Q); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyNumber_MatrixMultiply(__pyx_v_eigv, __pyx_v_Q); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_1 = __Pyx_PyNumber_MatrixMultiply(__pyx_t_5, __pyx_v_U); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyNumber_MatrixMultiply(__pyx_t_5, __pyx_v_U); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyNumber_MatrixMultiply(__pyx_v_Q_inv, __pyx_v_v0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyNumber_MatrixMultiply(__pyx_v_Q_inv, __pyx_v_v0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyNumber_MatrixMultiply(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyNumber_MatrixMultiply(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyFloat_FromDouble(pow(__pyx_v_llslss, __pyx_v_gs)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_5 = PyFloat_FromDouble(pow(__pyx_v_llslss, __pyx_v_gs)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_1 = PyNumber_Multiply(__pyx_t_6, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Multiply(__pyx_t_6, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -5660,7 +5520,7 @@ static PyObject *__pyx_pf_7calcmom_8fun3(CYTHON_UNUSED PyObject *__pyx_self, dou
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "calculate_moments.pyx":129
+  /* "calculate_moments.pyx":124
  * @cython.wraparound(False)
  * @cython.boundscheck(False)
  * def fun3(double l, double ls, double lss,             # <<<<<<<<<<<<<<
@@ -20500,17 +20360,17 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__28);
   __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(5, 0, 8, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_calculate_moments_pyx, __pyx_n_s_getk3, 20, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 20, __pyx_L1_error)
 
-  /* "calculate_moments.pyx":129
+  /* "calculate_moments.pyx":124
  * @cython.wraparound(False)
  * @cython.boundscheck(False)
  * def fun3(double l, double ls, double lss,             # <<<<<<<<<<<<<<
  *          double gs, double dur,
  *          double[:, ::1] L, D, v0):
  */
-  __pyx_tuple__30 = PyTuple_Pack(26, __pyx_n_s_l, __pyx_n_s_ls, __pyx_n_s_lss, __pyx_n_s_gs, __pyx_n_s_dur, __pyx_n_s_L, __pyx_n_s_D, __pyx_n_s_v0, __pyx_n_s_d1, __pyx_n_s_d2, __pyx_n_s_d3, __pyx_n_s_lls, __pyx_n_s_ldls, __pyx_n_s_lsdlss, __pyx_n_s_lslss, __pyx_n_s_llslss, __pyx_n_s_llsdlss, __pyx_n_s_ldlslss, __pyx_n_s_ldlsdlss, __pyx_n_s_llss, __pyx_n_s_ldlss, __pyx_n_s_U, __pyx_n_s_eigv, __pyx_n_s_A, __pyx_n_s_Q, __pyx_n_s_Q_inv); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_tuple__30 = PyTuple_Pack(26, __pyx_n_s_l, __pyx_n_s_ls, __pyx_n_s_lss, __pyx_n_s_gs, __pyx_n_s_dur, __pyx_n_s_L, __pyx_n_s_D, __pyx_n_s_v0, __pyx_n_s_d1, __pyx_n_s_d2, __pyx_n_s_d3, __pyx_n_s_lls, __pyx_n_s_ldls, __pyx_n_s_lsdlss, __pyx_n_s_lslss, __pyx_n_s_llslss, __pyx_n_s_llsdlss, __pyx_n_s_ldlslss, __pyx_n_s_ldlsdlss, __pyx_n_s_llss, __pyx_n_s_ldlss, __pyx_n_s_U, __pyx_n_s_eigv, __pyx_n_s_A, __pyx_n_s_Q, __pyx_n_s_Q_inv); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(0, 124, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__30);
   __Pyx_GIVEREF(__pyx_tuple__30);
-  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(8, 0, 26, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_calculate_moments_pyx, __pyx_n_s_fun3, 129, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(8, 0, 26, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_calculate_moments_pyx, __pyx_n_s_fun3, 124, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(0, 124, __pyx_L1_error)
 
   /* "View.MemoryView":287
  *         return self.name
@@ -21034,16 +20894,16 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_getk3, __pyx_t_2) < 0) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "calculate_moments.pyx":129
+  /* "calculate_moments.pyx":124
  * @cython.wraparound(False)
  * @cython.boundscheck(False)
  * def fun3(double l, double ls, double lss,             # <<<<<<<<<<<<<<
  *          double gs, double dur,
  *          double[:, ::1] L, D, v0):
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7calcmom_9fun3, NULL, __pyx_n_s_calcmom); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7calcmom_9fun3, NULL, __pyx_n_s_calcmom); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 124, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_fun3, __pyx_t_2) < 0) __PYX_ERR(0, 129, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_fun3, __pyx_t_2) < 0) __PYX_ERR(0, 124, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "calculate_moments.pyx":1
