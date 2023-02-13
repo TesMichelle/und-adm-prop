@@ -44,8 +44,8 @@ class kMoment:
         return admixture_proportions
 
 
-    # updated, work well
-    def get_admixture_fractions(self, replicates, admixed_population, source_population,
+    # updated, work well, big variance
+    def get_admixture_fractions_bvar(self, replicates, admixed_population, source_population,
                                 length_m=1, rho=1.6e-9, time=50):
 
         props = np.zeros(200)
@@ -66,11 +66,40 @@ class kMoment:
             total_length += ts.sequence_length
         return props/total_length
 
+    # updated, work well, lower variance
+    def get_admixture_moments(self, replicates, admixed_population, source_population,
+                                length_m=1, rho=1.6e-9, time=50):
+
+        k1 = 0
+        k2 = 0
+        k3 = 0
+        total_length = 0
+        for replicate_i, ts in enumerate(replicates):
+            adm_nodes = self.get_individuals_nodes(ts, admixed_population, sampled=True)
+            props = np.zeros(len(adm_nodes))
+            LA = np.zeros((len(adm_nodes), ts.num_trees))
+            segment_length = np.zeros(ts.num_trees)
+            for tree_i, tree in enumerate(ts.trees()):
+                segment_length[tree_i] = tree.interval[1] - tree.interval[0]
+                for sample_i, node in enumerate(adm_nodes):
+                    while tree.time(node) < time:
+                        node = tree.parent(node)
+                    LA[sample_i, tree_i] = tree.population(node) # 0 - first, 1 - second src
+                props[:] += segment_length[tree_i]*LA[:, tree_i]
+            props /= ts.sequence_length
+            k1 += props.sum()
+            k2 += kstat(props, 2)*ts.sequence_length**2
+            k3 += kstat(props, 3)*ts.sequence_length**3
+            total_length += ts.sequence_length
+        k1 /= total_length
+        k2 /= total_length**2
+        k3 /= total_length**3
+        return k1, k2, k3
+
+
     def sample_k(self, time=50):
-        admixture_proportions = self.get_admixture_fractions(self.ts, 2, 1, time=50)
-        self.k1_sampled = kstat(admixture_proportions, 1)
-        self.k2_sampled = kstat(admixture_proportions, 2)
-        self.k3_sampled = kstat(admixture_proportions, 3)
+        self.k1_sampled, self.k2_sampled, self.k3_sampled = \
+            self.get_admixture_moments(self.ts, 2, 1, time=50)
         print('data moments:')
         print(f'k1: {self.k1_sampled}\nk2: {self.k2_sampled}\nk3: {self.k3_sampled}')
         return self.k1_sampled, self.k2_sampled, self.k3_sampled
@@ -159,6 +188,13 @@ class kMoment:
         return x.x
 
     def estimate_cont(self, silence=True, x0=[5, 5], opb=False):
+        """
+            return:
+                s - int, prop per gen
+                T_start - int, generation, when admixture started
+                T_end - int, generation, when admixture ended
+                cost - int, value of cost function
+        """
 
         self.silence = silence
 
