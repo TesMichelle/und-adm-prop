@@ -33,9 +33,11 @@ def estimationBoxPlot(prefix='mom_sim/res',
                       figsize=(6, 6),
                       T_start=[2, 5, 10],
                       duration=[2, 5, 10],
+                      end=[2, 5, 10],
                       ppg=None,
                       total_s='02',
-                      sel=1,
+                      sel='dur',
+                      data_type='end',
                       xlabel='xlabel',
                       ylabel='ylabel',
                       title='title',
@@ -54,11 +56,23 @@ def estimationBoxPlot(prefix='mom_sim/res',
     colors = ['#'+'{:06X}'.format(int(x)) for x
               in rng.uniform(0, 16*16*16*16*16*16-1, size=len(duration))]
 
+    data_types = {'dur' : 2, 'start' : 1, 'end' : 2, 'ppg' : 0, 'end_r' : 2}
+
     for i in range(len(T_start)):
         for j in range(len(duration)):
             r = np.loadtxt(prefix+f'_{ppg}_{T_start[i]}_{duration[j]}.txt')
-            bp = ax.boxplot(r[:, sel], positions=[width/4 + width*i + 0.9*j*width/len(duration)],
+            data = r[:, data_types[sel]]
+            if data_type == 'end':
+                data = r[:, data_types[sel]+1]
+            if sel == 'dur' and data_type == 'end':
+                data = r[:, 3] - r[:, 2] + 1
+            if (sel == 'end' or sel == 'end_r') and data_type != 'end':
+                data = r[:, 2] + r[:, 1] - 1
+            if sel == 'end_r':
+                data -= T_start[i] - 1
+            bp = ax.boxplot(data, positions=[width/4 + width*i + 0.9*j*width/len(duration)],
                        patch_artist=True, showmeans=showmeans)
+            vp = ax.violinplot(data, positions=[width/4 + width*i + 0.9*j*width/len(duration)])
             for median in bp['medians']:
                 median.set_color(colors[j])
                 median.set_linewidth(5)
@@ -88,12 +102,14 @@ def estimationBoxPlot(prefix='mom_sim/res',
     print(ppg)
 
     ax.grid(axis='y')
-    if sel == 0:
+    if sel == 'ppg':
         yticks = ppg
-    if sel == 1:
+    if sel == 'start':
         yticks = T_start
-    if sel == 2:
+    if sel == 'dur':
         yticks = duration
+    if sel == 'end' or sel == 'end_r':
+        yticks = end
     if ylim == None:
         ylim = 2*yticks[-1]
     ax.set_yticks(yticks+[ylim])

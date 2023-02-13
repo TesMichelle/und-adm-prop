@@ -6,9 +6,14 @@ from scipy import integrate
 from lamom.calcmom import getk1, getk2, getk3, get_prop_per_gen
 
 class kMoment:
-    def __init__(self, N=1000, L=1, ts=None):
+    def __init__(self, N=1000, ts=None, lengths=[1]):
         self.N = N
-        self.L = L
+
+        self.lengths = np.array([lengths], dtype=float)
+        if type(lengths) == list:
+            lengths.sort()
+            self.lengths = np.array(lengths, dtype=float)
+
         self.ts = ts
 
     # msprime
@@ -20,7 +25,7 @@ class kMoment:
                     nodes.append(node.id)
         return nodes
 
-    # msprime
+    # tskit, old version, not working well
     def get_admixture_proportions(self, ts, admixed_population, source_population, length_m=1, rho=1.6e-9):
         length=int(length_m/rho)
         src1_nodes = self.get_individuals_nodes(ts, source_population)
@@ -38,11 +43,36 @@ class kMoment:
         self.af = admixture_proportions
         return admixture_proportions
 
-    def sample_k(self):
-        admixture_proportions = self.get_admixture_proportions(self.ts, 2, 1)
+
+    # updated, work well
+    def get_admixture_fractions(self, replicates, admixed_population, source_population,
+                                length_m=1, rho=1.6e-9, time=50):
+
+        props = np.zeros(200)
+        total_length = 0
+        for replicate_i, ts in enumerate(replicates):
+            adm_nodes = self.get_individuals_nodes(ts, admixed_population, sampled=True)
+            if replicate_i == 0:
+                props = np.zeros(len(adm_nodes))
+            LA = np.zeros((len(adm_nodes), ts.num_trees))
+            segment_length = np.zeros(ts.num_trees)
+            for tree_i, tree in enumerate(ts.trees()):
+                segment_length[tree_i] = tree.interval[1] - tree.interval[0]
+                for sample_i, node in enumerate(adm_nodes):
+                    while tree.time(node) < time:
+                        node = tree.parent(node)
+                    LA[sample_i, tree_i] = tree.population(node) # 0 - first, 1 - second src
+                props[:] += segment_length[tree_i]*LA[:, tree_i]
+            total_length += ts.sequence_length
+        return props/total_length
+
+    def sample_k(self, time=50):
+        admixture_proportions = self.get_admixture_fractions(self.ts, 2, 1, time=50)
         self.k1_sampled = kstat(admixture_proportions, 1)
         self.k2_sampled = kstat(admixture_proportions, 2)
         self.k3_sampled = kstat(admixture_proportions, 3)
+        print('data moments:')
+        print(f'k1: {self.k1_sampled}\nk2: {self.k2_sampled}\nk3: {self.k3_sampled}')
         return self.k1_sampled, self.k2_sampled, self.k3_sampled
 
     def init_matrixes(self, n, s0): #need to update, legacy
@@ -95,19 +125,23 @@ class kMoment:
         prop_per_gen = get_prop_per_gen(self.k1_sampled, par[1])
         if not self.silence:
             print(par)
-        return (getk2(prop_per_gen, par[0], par[1],
-                     L=self.L, N=self.N) - self.k2_sampled,
-               getk3(prop_per_gen, par[0], par[1],
-                     L=self.L, N=self.N) - self.k3_sampled)
+        return (
+            getk2(prop_per_gen, par[0], par[1],
+                  self.lengths, N=self.N) - self.k2_sampled,
+            getk3(prop_per_gen, par[0], par[1],
+                  self.lengths, N=self.N) - self.k3_sampled
+            )
 
     def metr_cont_start_end(self, par):
         prop_per_gen = get_prop_per_gen(self.k1_sampled, par[1]-par[0]+1)
         if not self.silence:
             print(par)
-        return (getk2(prop_per_gen, par[0], par[1]-par[0]+1,
-                     L=self.L, N=self.N) - self.k2_sampled,
-               getk3(prop_per_gen, par[0], par[1]-par[0]+1,
-                     L=self.L, N=self.N) - self.k3_sampled)
+        return (
+            getk2(prop_per_gen, par[0], par[1]-par[0]+1,
+                  self.lengths, N=self.N) - self.k2_sampled,
+            getk3(prop_per_gen, par[0], par[1]-par[0]+1,
+                  self.lengths, N=self.N) - self.k3_sampled
+            )
 
     def metr_cont_3(self, par):
         k1 = getk1(par[0], par[2])

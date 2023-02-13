@@ -12,6 +12,7 @@ backup/
 *$py.class
 
 # C extensions
+*.c
 *.so
 
 # Distribution / packaging
