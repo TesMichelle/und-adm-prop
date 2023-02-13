@@ -87,7 +87,7 @@ class kMoment:
                     LA[sample_i, tree_i] = tree.population(node) # 0 - first, 1 - second src
                 props[:] += segment_length[tree_i]*LA[:, tree_i]
             props /= ts.sequence_length
-            k1 += props.sum()
+            k1 += kstat(props, 1)*ts.sequence_length
             k2 += kstat(props, 2)*ts.sequence_length**2
             k3 += kstat(props, 3)*ts.sequence_length**3
             total_length += ts.sequence_length
