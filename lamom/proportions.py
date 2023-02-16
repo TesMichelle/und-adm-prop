@@ -11,7 +11,6 @@ class kMoment:
 
         self.lengths = np.array([lengths], dtype=float)
         if type(lengths) == list:
-            lengths.sort()
             self.lengths = np.array(lengths, dtype=float)
 
         self.ts = ts
@@ -45,7 +44,7 @@ class kMoment:
 
 
     # updated, work well, big variance
-    def get_admixture_fractions_bvar(self, replicates, admixed_population, source_population,
+    def get_admixture_moments_bvar(self, replicates, admixed_population, source_population,
                                 length_m=1, rho=1.6e-9, time=50):
 
         props = np.zeros(200)
@@ -64,16 +63,19 @@ class kMoment:
                     LA[sample_i, tree_i] = tree.population(node) # 0 - first, 1 - second src
                 props[:] += segment_length[tree_i]*LA[:, tree_i]
             total_length += ts.sequence_length
-        return props/total_length
+        props /= total_length
+        k1 = props.mean()
+        k2 = kstat(props, 2)
+        k3 = kstat(props, 3)
+        return [k1], [k2], [k3]
 
     # updated, work well, lower variance
     def get_admixture_moments(self, replicates, admixed_population, source_population,
                                 length_m=1, rho=1.6e-9, time=50):
 
-        k1 = 0
-        k2 = 0
-        k3 = 0
-        total_length = 0
+        k1_list = []
+        k2_list = []
+        k3_list = []
         for replicate_i, ts in enumerate(replicates):
             adm_nodes = self.get_individuals_nodes(ts, admixed_population, sampled=True)
             props = np.zeros(len(adm_nodes))
@@ -87,22 +89,93 @@ class kMoment:
                     LA[sample_i, tree_i] = tree.population(node) # 0 - first, 1 - second src
                 props[:] += segment_length[tree_i]*LA[:, tree_i]
             props /= ts.sequence_length
-            k1 += kstat(props, 1)*ts.sequence_length
-            k2 += kstat(props, 2)*ts.sequence_length**2
-            k3 += kstat(props, 3)*ts.sequence_length**3
-            total_length += ts.sequence_length
-        k1 /= total_length
-        k2 /= total_length**2
-        k3 /= total_length**3
-        return k1, k2, k3
+            k1_list.append(kstat(props, 1))
+            k2_list.append(kstat(props, 2))
+            k3_list.append(kstat(props, 3))
+        return k1_list, k2_list, k3_list
 
+    def set_k(self, k1_list, k2_list, k3_list, lengths):
+        self.k1_list, self.k2_list, self.k3_list = k1_list, k2_list, k3_list
+        self.lengths = lengths
 
-    def sample_k(self, time=50):
-        self.k1_sampled, self.k2_sampled, self.k3_sampled = \
-            self.get_admixture_moments(self.ts, 2, 1, time=50)
-        print('data moments:')
-        print(f'k1: {self.k1_sampled}\nk2: {self.k2_sampled}\nk3: {self.k3_sampled}')
-        return self.k1_sampled, self.k2_sampled, self.k3_sampled
+    def sample_k(self, time=50, unite=False):
+        if not unite:
+            self.k1_list, self.k2_list, self.k3_list = \
+                self.get_admixture_moments(self.ts, 2, 1, time=time)
+        else:
+            self.k1_list, self.k2_list, self.k3_list = \
+                self.get_admixture_moments_bvar(self.ts, 2, 1, time=time)
+
+        return self.k1_list, self.k2_list, self.k3_list, self.lengths
+
+    def make_batch(self, k1_list, k2_list, k3_list, lengths, batchsize=1):
+        batch_lengths = []
+        total_batch_length = 0
+        k1_sampled_batch = []
+        k2_sampled_batch = []
+        k3_sampled_batch = []
+        sampled_batch_lengths = []
+        k1_tmp = 0
+        k2_tmp = 0
+        k3_tmp = 0
+        for i, (k1, k2, k3) in enumerate(zip(k1_list,
+                                             k2_list,
+                                             k3_list)):
+            total_batch_length += lengths[i]
+            k1_tmp += k1*lengths[i]
+            k2_tmp += k2*lengths[i]**2
+            k3_tmp += k3*lengths[i]**3
+            batch_lengths.append(lengths[i])
+            if (i+1) % batchsize == 0:
+                k1_sampled_batch.append(k1_tmp/total_batch_length)
+                k2_sampled_batch.append(k2_tmp/total_batch_length**2)
+                k3_sampled_batch.append(k3_tmp/total_batch_length**3)
+                sampled_batch_lengths.append(batch_lengths)
+                batch_lengths = []
+                k1_tmp = 0
+                k2_tmp = 0
+                k3_tmp = 0
+                total_batch_length = 0
+        print(f'\ndata moments (chr/batch={batchsize}):')
+        print('batch_i\tk1\tk2\tk3')
+        for i, (k1, k2, k3) in enumerate(zip(k1_sampled_batch,
+                                             k2_sampled_batch,
+                                             k3_sampled_batch)):
+            print(i, end='\t')
+            print(f'{k1}\t{k2}\t{k3}')
+        return k1_sampled_batch, k2_sampled_batch, k3_sampled_batch, sampled_batch_lengths
+
+    def estimate(self, silence=True, x0=[5, 5], batchsize=1):
+
+        dtype = [('k1', float), ('k2', float), ('k3', float), ('length', float)]
+        values = [(self.k1_list[i],
+                   self.k2_list[i],
+                   self.k3_list[i],
+                   self.lengths[i]) for i in range(len(self.lengths))]
+        a = np.array(values, dtype=dtype)
+        b = np.sort(a, order='length')
+        r = [[b[i][0], b[i][1], b[i][2], b[i][3]] for i in range(len(self.lengths))]
+        r = np.array(r, dtype=float)
+
+        k1_sampled_batch, k1_sampled_batch, k1_sampled_batch, k1_sampled_batch \
+            = make_batch(self, r[:, 0], r[:, 1], r[:, 2], r[:, 3], batchsize=batchsize)
+
+        self.res = np.zeros((len(k1_sampled_batch), 4))
+        for i, (k1, k2, k3, lengths) in enumerate(zip(k1_sampled_batch,
+                                                      k2_sampled_batch,
+                                                      k3_sampled_batch,
+                                                      sampled_batch_lengths)):
+            tmp = self.estimate_cont(k1, k2, k3, lengths, silence=silence, x0=x0)
+            self.res[i] = tmp
+
+        print('estimation results:')
+        print('batch_i\tT_start\tT_end\ts\tcost_fun_val')
+        for i, tmp in enumerate(self.res):
+            print(f'{i}\t{tmp[1]}\t{tmp[2]}\t{tmp[0]}\t{tmp[3]}')
+        if len(self.res) > 1:
+            print(f'mean\t{self.res[:, 1].mean()}\t{self.res[:, 2].mean()}\t{self.res[:, 0].mean()}\t{self.res[:, 3].mean()}')
+            print(f'var\t{self.res[:, 1].var()}\t{self.res[:, 2].var()}\t{self.res[:, 0].var()}\t{self.res[:, 3].var()}')
+
 
     def init_matrixes(self, n, s0): #need to update, legacy
         M4 = np.array([
@@ -156,9 +229,9 @@ class kMoment:
             print(par)
         return (
             getk2(prop_per_gen, par[0], par[1],
-                  self.lengths, N=self.N) - self.k2_sampled,
+                  self.lengths_sampled, N=self.N) - self.k2_sampled,
             getk3(prop_per_gen, par[0], par[1],
-                  self.lengths, N=self.N) - self.k3_sampled
+                  self.lengths_sampled, N=self.N) - self.k3_sampled
             )
 
     def metr_cont_start_end(self, par):
@@ -167,9 +240,9 @@ class kMoment:
             print(par)
         return (
             getk2(prop_per_gen, par[0], par[1]-par[0]+1,
-                  self.lengths, N=self.N) - self.k2_sampled,
+                  self.lengths_sampled, N=self.N) - self.k2_sampled,
             getk3(prop_per_gen, par[0], par[1]-par[0]+1,
-                  self.lengths, N=self.N) - self.k3_sampled
+                  self.lengths_sampled, N=self.N) - self.k3_sampled
             )
 
     def metr_cont_3(self, par):
@@ -187,7 +260,8 @@ class kMoment:
         self.res = x
         return x.x
 
-    def estimate_cont(self, silence=True, x0=[5, 5], opb=False):
+    def estimate_cont(self, k1_sampled, k2_sampled, k3_sampled, lengths,
+                            silence=True, x0=[5, 5], opb=False):
         """
             return:
                 s - int, prop per gen
@@ -197,6 +271,10 @@ class kMoment:
         """
 
         self.silence = silence
+        self.k1_sampled = k1_sampled
+        self.k2_sampled = k2_sampled
+        self.k3_sampled = k3_sampled
+        self.lengths_sampled = np.array(lengths, dtype=float)
 
         if opb: # dur > opt - g_start + 1
             optime = self.estimate_one_pulse()[0]
@@ -213,18 +291,17 @@ class kMoment:
             T_end = x.x[1] + x.x[0] - 1
             duration = x.x[1]
         T_start = x.x[0]
-        self.res = x
-        return get_prop_per_gen(self.k1_sampled, duration), T_start, T_end, x.cost
+        return get_prop_per_gen(k1_sampled, duration), T_start, T_end, x.cost
 
     def metr_cont_discr_1(self, T_start, dur, ppg):
         T_start = T_start[0]
         k3 = getk3(ppg, T_start, dur, L=self.L, N=self.N)
-        return (k3 - self.k3_sampled)
+        return (k3 - k3_sampled)
 
     def metr_cont_discr_2(self, dur, T_start):
-        ppg = get_prop_per_gen(self.k1_sampled, dur)
+        ppg = get_prop_per_gen(k1_sampled, dur)
         k2 = getk2(ppg, T_start, dur[0], L=self.L, N=self.N)
-        return (k2 - self.k2_sampled)
+        return (k2 - k2_sampled)
 
     def estimate_cont_discr(self, n_it=20, T_start0=10, dur0=5):
         estimates = []
@@ -238,7 +315,7 @@ class kMoment:
             dur_next = ores.x[0]
             dur_next_cost = ores.cost
             print([T_start_next_next, dur_next])
-            ppg = get_prop_per_gen(self.k1_sampled, dur_next)
+            ppg = get_prop_per_gen(k1_sampled, dur_next)
             ores = least_squares(self.metr_cont_discr_1, [T_start_next_next],
                               bounds=(0, np.inf), args=[dur_next, ppg])
             T_start_next_next = ores.x[0]
