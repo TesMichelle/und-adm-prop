@@ -109,6 +109,8 @@ class kMoment:
         return self.k1_list, self.k2_list, self.k3_list, self.lengths
 
     def make_batch(self, k1_list, k2_list, k3_list, lengths, batchsize=1):
+        if batchsize==0:
+            return k1_list, k2_list, k3_list, [lengths]
         batch_lengths = []
         total_batch_length = 0
         k1_sampled_batch = []
@@ -145,20 +147,27 @@ class kMoment:
             print(f'{k1}\t{k2}\t{k3}')
         return k1_sampled_batch, k2_sampled_batch, k3_sampled_batch, sampled_batch_lengths
 
-    def estimate(self, silence=True, x0=[5, 5], batchsize=1):
+    def estimate(self, silence=True, x0=[5, 5], batchsize=0):
 
-        dtype = [('k1', float), ('k2', float), ('k3', float), ('length', float)]
-        values = [(self.k1_list[i],
-                   self.k2_list[i],
-                   self.k3_list[i],
-                   self.lengths[i]) for i in range(len(self.lengths))]
-        a = np.array(values, dtype=dtype)
-        b = np.sort(a, order='length')
-        r = [[b[i][0], b[i][1], b[i][2], b[i][3]] for i in range(len(self.lengths))]
-        r = np.array(r, dtype=float)
-
-        k1_sampled_batch, k1_sampled_batch, k1_sampled_batch, k1_sampled_batch \
-            = make_batch(self, r[:, 0], r[:, 1], r[:, 2], r[:, 3], batchsize=batchsize)
+        if batchsize != 0:
+            dtype = [('k1', float), ('k2', float), ('k3', float), ('length', float)]
+            values = [(self.k1_list[i],
+                       self.k2_list[i],
+                       self.k3_list[i],
+                       self.lengths[i]) for i in range(len(self.lengths))]
+            a = np.array(values, dtype=dtype)
+            b = np.sort(a, order='length')
+            r = [[b[i][0], b[i][1], b[i][2], b[i][3]] for i in range(len(self.lengths))]
+            r = np.array(r, dtype=float)
+            k1_sampled_batch, k2_sampled_batch, k3_sampled_batch, sampled_batch_lengths \
+                = self.make_batch(
+                    r[:, 0], r[:, 1], r[:, 2], r[:, 3],
+                    batchsize=batchsize)
+        else:
+            k1_sampled_batch, k2_sampled_batch, k3_sampled_batch, sampled_batch_lengths \
+                = self.make_batch(
+                    self.k1_list, self.k2_list, self.k3_list, self.lengths,
+                    batchsize=batchsize)
 
         self.res = np.zeros((len(k1_sampled_batch), 4))
         for i, (k1, k2, k3, lengths) in enumerate(zip(k1_sampled_batch,

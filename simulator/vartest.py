@@ -6,8 +6,8 @@ from simulator.sim import const_gen_flow
 
 seed = int(sys.argv[0])
 
-T_start = 2
-duration = 10
+T_start = 5
+duration = 5
 total_s = 0.3
 num_replicates = 2
 

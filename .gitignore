@@ -5,6 +5,8 @@ mom_sim/
 local_ancestry_moments/
 *.ipynb
 .DS_Store
+*.txt
+*.npy
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -13,7 +15,7 @@ backup/
 *$py.class
 
 # C extensions
-*.c
+
 *.so
 
 # Distribution / packaging

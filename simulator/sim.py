@@ -1,4 +1,5 @@
 import msprime
+import functools
 
 
 def one_pulse(g=15, s0=0.5, sample_sizes=[100, 100, 100], mu=1.25e-8, rho = 1.6e-9, N_haploid = [1000, 1000, 1000], lenght_m = 1, seed=1):
@@ -49,7 +50,7 @@ def const_gen_flow(g_start=2, g_end=11, sg=None, Tdiv=4000, total_s = 0.2, num_r
     dem.add_population_split(time=Tdiv, derived=["A", "B"], ancestral="old")
     dem.sort_events()
 
-    ts = msprime.sim_ancestry(
+    reps = msprime.sim_ancestry(
         samples={"A": sample_sizes[0], "B": sample_sizes[1], "C": sample_sizes[2]},
         demography=dem, sequence_length = length, recombination_rate=rho, ploidy=2,
         #model=[msprime.DiscreteTimeWrightFisher(duration=50), msprime.StandardCoalescent(duration=3950)],
@@ -59,5 +60,6 @@ def const_gen_flow(g_start=2, g_end=11, sg=None, Tdiv=4000, total_s = 0.2, num_r
         model='dtwf', num_replicates=num_replicates,
         random_seed=seed)
     if sim_mut:
-        ts = msprime.sim_mutations(ts, rate=mu, random_seed=seed)
-    return ts
+        mutations_func = functools.partial(msprime.sim_mutations, rate=mu)
+        reps = map(mutations_func, reps)
+    return reps
