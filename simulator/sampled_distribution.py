@@ -19,4 +19,4 @@ k1, k2, k3, k4, lengths = exp.sample_k(unite=False)
 
 
 for i in range(num_replicates):
-    print(f'{k1[i]}, {k2[i]}, {k3[i]}, {k4[i]}')
+    print(f'{k1[i]}\t{k2[i]}\t{k3[i]}\t{k4[i]}')
