@@ -25,7 +25,7 @@ class kMoment:
         return nodes
 
     # tskit, old version, not working well
-    def get_admixture_proportions(self, ts, admixed_population, source_population, length_m=1, rho=1.6e-9):
+    def get_admixture_proportions_old(self, ts, admixed_population, source_population, length_m=1, rho=1.6e-9):
         length=int(length_m/rho)
         src1_nodes = self.get_individuals_nodes(ts, source_population)
         adm_nodes = self.get_individuals_nodes(ts, admixed_population, sampled=True)
@@ -42,26 +42,32 @@ class kMoment:
         self.af = admixture_proportions
         return admixture_proportions
 
-
-    # updated, work well, big variance
-    def get_admixture_moments_bvar(self, replicates, admixed_population, source_population,
-                                length_m=1, rho=1.6e-9, time=50):
-
-        props = np.zeros(200)
-        total_length = 0
-        for replicate_i, ts in enumerate(replicates):
+    def get_admixture_proportions(self, ts, admixed_population, source_population, maxtime):
             adm_nodes = self.get_individuals_nodes(ts, admixed_population, sampled=True)
-            if replicate_i == 0:
-                props = np.zeros(len(adm_nodes))
+            props = np.zeros(len(adm_nodes))
             LA = np.zeros((len(adm_nodes), ts.num_trees))
             segment_length = np.zeros(ts.num_trees)
             for tree_i, tree in enumerate(ts.trees()):
                 segment_length[tree_i] = tree.interval[1] - tree.interval[0]
                 for sample_i, node in enumerate(adm_nodes):
-                    while tree.time(node) < time:
+                    while tree.time(node) < maxtime:
                         node = tree.parent(node)
                     LA[sample_i, tree_i] = tree.population(node) # 0 - first, 1 - second src
                 props[:] += segment_length[tree_i]*LA[:, tree_i]
+            return props / ts.sequence_length
+
+
+    # updated, work well, big variance
+    def get_admixture_moments_bvar(self, replicates, admixed_population, source_population,
+                                length_m=1, rho=1.6e-9, time=50):
+
+        props_overall = np.zeros(200)
+        total_length = 0
+        for replicate_i, ts in enumerate(replicates):
+            if replicate_i == 0:
+                props_overall = np.zeros(len(adm_nodes))
+            props_overall += self.get_admixture_proportions(ts, admixed_population,
+                source_population) * ts.sequence_length
             total_length += ts.sequence_length
         props /= total_length
         k1 = props.mean()
@@ -76,23 +82,15 @@ class kMoment:
         k1_list = []
         k2_list = []
         k3_list = []
+        k4_list = []
         for replicate_i, ts in enumerate(replicates):
-            adm_nodes = self.get_individuals_nodes(ts, admixed_population, sampled=True)
-            props = np.zeros(len(adm_nodes))
-            LA = np.zeros((len(adm_nodes), ts.num_trees))
-            segment_length = np.zeros(ts.num_trees)
-            for tree_i, tree in enumerate(ts.trees()):
-                segment_length[tree_i] = tree.interval[1] - tree.interval[0]
-                for sample_i, node in enumerate(adm_nodes):
-                    while tree.time(node) < time:
-                        node = tree.parent(node)
-                    LA[sample_i, tree_i] = tree.population(node) # 0 - first, 1 - second src
-                props[:] += segment_length[tree_i]*LA[:, tree_i]
-            props /= ts.sequence_length
+            props = self.get_admixture_proportions(ts, admixed_population,
+                source_population, time)
             k1_list.append(kstat(props, 1))
             k2_list.append(kstat(props, 2))
             k3_list.append(kstat(props, 3))
-        return k1_list, k2_list, k3_list
+            k4_list.append(kstat(props, 4))
+        return k1_list, k2_list, k3_list, k4_list
 
     def set_k(self, k1_list, k2_list, k3_list, lengths):
         self.k1_list, self.k2_list, self.k3_list = k1_list, k2_list, k3_list
@@ -100,13 +98,13 @@ class kMoment:
 
     def sample_k(self, time=50, unite=False):
         if not unite:
-            self.k1_list, self.k2_list, self.k3_list = \
+            self.k1_list, self.k2_list, self.k3_list, self.k4_list = \
                 self.get_admixture_moments(self.ts, 2, 1, time=time)
         else:
-            self.k1_list, self.k2_list, self.k3_list = \
+            self.k1_list, self.k2_list, self.k3_list, self.k4_list = \
                 self.get_admixture_moments_bvar(self.ts, 2, 1, time=time)
 
-        return self.k1_list, self.k2_list, self.k3_list, self.lengths
+        return self.k1_list, self.k2_list, self.k3_list, self.k4_list, self.lengths
 
     def make_batch(self, k1_list, k2_list, k3_list, lengths, batchsize=1):
         if batchsize==0:

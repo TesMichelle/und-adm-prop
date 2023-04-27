@@ -16,6 +16,7 @@ backup/
 
 # C extensions
 
+*.c
 *.so
 
 # Distribution / packaging

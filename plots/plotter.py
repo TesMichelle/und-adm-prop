@@ -29,7 +29,8 @@ def validatePlot(k3_sim, k3_th, rtol=False):
     else:
         axs[2].set_title('error')
 
-def estimationBoxPlot(prefix='mom_sim/res',
+def estimationBoxPlot(ax,
+                      prefix='mom_sim/res',
                       figsize=(6, 6),
                       T_start=[2, 5, 10],
                       duration=[2, 5, 10],
@@ -42,9 +43,10 @@ def estimationBoxPlot(prefix='mom_sim/res',
                       ylabel='ylabel',
                       title='title',
                       ylim=None,
-                      showmeans=True
+                      showmeans=True,
+                      show_vp = True,
+                      showfliers = True
                       ):
-    fig, ax = plt.subplots(figsize=figsize)
     if total_s != None:
         ppg = total_s
     values = [[ppg], T_start, duration]
@@ -71,8 +73,9 @@ def estimationBoxPlot(prefix='mom_sim/res',
             if sel == 'end_r':
                 data -= T_start[i] - 1
             bp = ax.boxplot(data, positions=[width/4 + width*i + 0.9*j*width/len(duration)],
-                       patch_artist=True, showmeans=showmeans)
-            vp = ax.violinplot(data, positions=[width/4 + width*i + 0.9*j*width/len(duration)])
+                       patch_artist=True, showmeans=showmeans, showfliers=showfliers)
+            if show_vp:
+                vp = ax.violinplot(data, positions=[width/4 + width*i + 0.9*j*width/len(duration)])
             for median in bp['medians']:
                 median.set_color(colors[j])
                 median.set_linewidth(5)
@@ -88,13 +91,13 @@ def estimationBoxPlot(prefix='mom_sim/res',
             for caps in bp['caps']:
                 caps.set_linewidth(2)
 
-    patches = [mpatches.Patch(label=str(duration[i]), color=colors[i], linewidth=2)
+    patches = [mpatches.Patch(label=f'True duration = {duration[i]}', color=colors[i], linewidth=2)
                for i in range(len(duration))]
     for patch in patches:
         patch.set_edgecolor('black')
 
 
-    legend = ax.legend(handles=patches, ncol=1, fontsize=15,
+    legend = ax.legend(handles=patches, ncol=1, fontsize=12,
                        edgecolor='black', fancybox=False, loc='upper left')
 
     if total_s != None:
@@ -120,4 +123,9 @@ def estimationBoxPlot(prefix='mom_sim/res',
     ax.set_title(title)
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
-    return fig, ax
+    return ax
+
+
+def struct_plot(data, ax=None):
+    ax.bar(range(data), 1-data, width=1)
+    ax.bar(range(data), data, bottom= 1-data, width=1)

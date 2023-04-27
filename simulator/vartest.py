@@ -4,7 +4,7 @@ from lamom.proportions import kMoment
 
 from simulator.sim import const_gen_flow
 
-seed = int(sys.argv[0])
+seed = int(sys.argv[1])
 
 T_start = 5
 duration = 5
