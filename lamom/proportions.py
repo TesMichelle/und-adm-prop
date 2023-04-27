@@ -50,8 +50,10 @@ class kMoment:
             for tree_i, tree in enumerate(ts.trees()):
                 segment_length[tree_i] = tree.interval[1] - tree.interval[0]
                 for sample_i, node in enumerate(adm_nodes):
-                    while tree.time(node) < maxtime:
-                        node = tree.parent(node)
+                    parent = tree.parent(node)
+                    while tree.time(node) < maxtime and parent != -1:
+                        node = parent
+                        parent = tree.parent(node)
                     LA[sample_i, tree_i] = tree.population(node) # 0 - first, 1 - second src
                 props[:] += segment_length[tree_i]*LA[:, tree_i]
             return props / ts.sequence_length
