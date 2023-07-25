@@ -91,7 +91,7 @@ def estimationBoxPlot(ax,
             for caps in bp['caps']:
                 caps.set_linewidth(2)
 
-    patches = [mpatches.Patch(label=f'True duration = {duration[i]}', color=colors[i], linewidth=2)
+    patches = [mpatches.Patch(label=f'Duration = {duration[i]}', color=colors[i], linewidth=2)
                for i in range(len(duration))]
     for patch in patches:
         patch.set_edgecolor('black')

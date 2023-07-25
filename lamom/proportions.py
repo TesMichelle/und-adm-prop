@@ -67,15 +67,17 @@ class kMoment:
         total_length = 0
         for replicate_i, ts in enumerate(replicates):
             if replicate_i == 0:
+                adm_nodes = self.get_individuals_nodes(ts, admixed_population, sampled=True)
                 props_overall = np.zeros(len(adm_nodes))
             props_overall += self.get_admixture_proportions(ts, admixed_population,
-                source_population) * ts.sequence_length
+                source_population, time) * ts.sequence_length
             total_length += ts.sequence_length
-        props /= total_length
-        k1 = props.mean()
-        k2 = kstat(props, 2)
-        k3 = kstat(props, 3)
-        return [k1], [k2], [k3]
+        props_overall /= total_length
+        k1 = kstat(props_overall, 1)
+        k2 = kstat(props_overall, 2)
+        k3 = kstat(props_overall, 3)
+        k4 = kstat(props_overall, 4)
+        return [k1], [k2], [k3], [k4]
 
     # updated, work well, lower variance
     def get_admixture_moments(self, replicates, admixed_population, source_population,

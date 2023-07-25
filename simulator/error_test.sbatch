@@ -8,16 +8,16 @@
 
 source activate lamom2
 idx=$SLURM_ARRAY_TASK_ID
-srun python mstoadmixture.py ${idx}
+srun python errortest.py ${idx}
 
-find adm_test/seed_${idx} -name '*.gz' \
+find error_test/seed_${idx} -name '*.gz' \
 | xargs -tI{} plink --vcf {} --recode 12 --make-bed --out {} --const-fid
 
-find adm_test/seed_${idx} -name '*.bed' \
+find error_test/seed_${idx} -name '*.bed' \
 plink --bfile {} --indep-pairwise 50 10 0.1
 
-find adm_test/seed_${idx} -name '*.bed' \
+find error_test/seed_${idx} -name '*.bed' \
 plink --bfile {} --extract plink.prune.in --make-bed --out prunedData
 
-find adm_test/seed_${idx} -name 'prunedData.bed' \
+find error_test/seed_${idx} -name 'prunedData.bed' \
 | xargs -tI{} admixture {} --supervised 2 -j4
