@@ -1,7 +1,7 @@
 #
 adm_res/
 docs/
-mom_sim/
+simulations/
 local_ancestry_moments/
 *.ipynb
 .DS_Store

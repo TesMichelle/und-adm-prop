@@ -10,8 +10,8 @@ import subprocess
 N = 1000
 seed = int(sys.argv[1])
 T_start = 5
-duration = 5
-total_s = 0.3
+duration = 1
+total_s = 0.5
 num_replicates = 1
 length_m = 1
 
@@ -49,3 +49,4 @@ exp = kMoment(N, ts=replicates, lengths=[length_m, length_m])
 for i, ts in tqdm(enumerate(replicates)):
     props = self.get_admixture_proportions(ts,
         2, 1, 50)
+    np.savetxt(f'/seed_{seed}_msprops.txt', props)
