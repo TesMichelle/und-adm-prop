@@ -162,30 +162,30 @@ cdef class RegEst:
         self.expectation_k3[i] *= 6 / pow(self.sample_lengths[i], 3)
 
     @cython.cdivision(True)
-    cdef double getd(self, double ldl, double sg):
+    cdef double get_coefficient_d(self, double ldl, double sg):
         return (1 - 1/2./self.N + ldl/2./self.N)*(1-sg)**2
 
     @cython.cdivision(True)
-    cdef double getc(self, double ll, double sg):
+    cdef double get_coefficient_c(self, double ll, double sg):
         return ll*(1-sg)/2./self.N
 
-    cdef double geta(self, double ll, double sg):
+    cdef double get_coefficient_a(self, double ll, double sg):
         return ll*(1-sg)
 
-    cdef double getb(self, double ldl, double sg):
+    cdef double get_coefficient_b(self, double ldl, double sg):
         return ldl*pow(1-sg, 2)
 
-    cdef double getdiscr(self, double a, double b, double c, double d):
+    cdef double get_discr(self, double a, double b, double c, double d):
         return sqrt(a*a + 4*b*c-2*a*d + d*d)
 
-    cdef double getroot1(self, double a, double b, double c, double d):
+    cdef double get_root_1(self, double a, double b, double c, double d):
         return 0.5*(a+d-self.getdiscr(a, b, c, d))
 
-    cdef double getroot2(self, double a, double b, double c, double d):
+    cdef double get_root_2(self, double a, double b, double c, double d):
         return 0.5*(a+d+self.getdiscr(a, b, c, d))
 
     @cython.cdivision(True)
-    cdef double getvn2(self,
+    cdef double get_vn_2(self,
             double sg, double g, double length,
             double a, double b, double c, double d,
             double ll, double ldl, double discr, double dr,
@@ -194,7 +194,7 @@ cdef class RegEst:
         return 0.5*(-2.*c*(dr)*v00+((a-d)*dr+discr*(r1**g+r2**g))*v01)/ discr
 
     @cython.cdivision(True)
-    cdef double getvn1(self,
+    cdef double get_vn_1(self,
             double sg, double g, double length,
             double a, double b, double c, double d,
             double ll, double ldl, double discr, double dr,
@@ -209,24 +209,24 @@ cdef class RegEst:
         cdef double ll = (1. + exp(-2.*length))/2.
         cdef double ldl = (1. - exp(-2.*length))/2.
 
-        cdef double a = self.geta(ll, s)
-        cdef double b = self.getb(ldl, s)
-        cdef double c = self.getc(ll, s)
-        cdef double d = self.getd(ldl, s)
+        cdef double a = self.get_coefficient_a(ll, s)
+        cdef double b = self.get_coefficient_b(ldl, s)
+        cdef double c = self.get_coefficient_c(ll, s)
+        cdef double d = self.get_coefficient_d(ldl, s)
 
-        cdef double discr = self.getdiscr(a, b, c, d)
+        cdef double discr = self.get_discr(a, b, c, d)
 
-        cdef double r1 = self.getroot1(a, b, c, d)
-        cdef double r2 = self.getroot2(a, b, c, d)
+        cdef double r1 = self.get_root_1(a, b, c, d)
+        cdef double r2 = self.get_root_2(a, b, c, d)
 
         cdef double v00 = 1.-s
         cdef double v01 = (1.-s)*(1.-s)
 
         cdef double dr = pow(r1, dur-1) - pow(r2, dur-1.)
 
-        return (self.getvn1(s, dur-1., length, a, b, c, d, ll,
+        return (self.get_vn_1(s, dur-1., length, a, b, c, d, ll,
                        ldl, discr, dr, r1, r2, v00, v01, self.N)
-              - self.getvn2(s, dur-1., length, a, b, c, d, ll,
+              - self.get_vn_2(s, dur-1., length, a, b, c, d, ll,
                        ldl, discr, dr, r1, r2, v00, v01, self.N)) \
               * pow(ll, gs)
 
