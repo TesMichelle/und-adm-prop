@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name="sample_accurancy"
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=1
 #SBATCH --time=0-12:0
 #SBATCH --output="sample_accurancy/s5d5_%a.log"
 #SBATCH --error="sample_accurancy/s5d5_%a.err"
