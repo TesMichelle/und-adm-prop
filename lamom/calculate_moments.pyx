@@ -23,7 +23,7 @@ cdef class RegEst:
 
         int populations_number
 
-    def __init__(self, N):
+    def __init__(self, double N):
         self.v0 = np.zeros(5, dtype=float)
         self.eigv = np.array([1, -1, -1, -1, 2], dtype=float)
         self.D_matrix = np.zeros((5, 5), dtype=float)
