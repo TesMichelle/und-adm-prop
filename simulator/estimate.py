@@ -18,7 +18,7 @@ lengths=np.linspace(1, 2, len(sample_k1))
 
 exp = kMoment(1000)
 exp.sample(sample_k1, sample_k2, sample_k3, lengths)
-exp.estimate(x0=x0)
+x = exp.estimate(x0=x0)
 
 s = exp.model.get_prop_per_gen(x.x[1])
 print(s, *x.x, end=' ')
