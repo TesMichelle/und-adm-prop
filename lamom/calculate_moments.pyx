@@ -161,19 +161,19 @@ cdef class RegEst:
             self.expectation_k3[i-1] *= 6 / pow(self.sample_lengths[i-1], 3)
         self.expectation_k3[i] *= 6 / pow(self.sample_lengths[i], 3)
 
-    cdef double geta(self, double N, double ll, double ldl, double sg):
+    @cython.cdivision(True)
+    cdef double getd(self, double ldl, double sg):
+        return (1 - 1/2./self.N + ldl/2./self.N)*(1-sg)**2
+
+    @cython.cdivision(True)
+    cdef double getc(self, double ll, double sg):
+        return ll*(1-sg)/2./self.N
+
+    cdef double geta(self, double ll, double sg):
         return ll*(1-sg)
 
-    cdef double getb(self, double N, double ll, double ldl, double sg):
+    cdef double getb(self, double ldl, double sg):
         return ldl*pow(1-sg, 2)
-
-    @cython.cdivision(True)
-    cdef double getc(self, double N, double ll, double ldl, double sg):
-        return ll*(1-sg)/2./N
-
-    @cython.cdivision(True)
-    cdef double getd(self, double N, double ll, double ldl, double sg):
-        return (1 - 1/2./N + ldl/2./N)*(1-sg)**2
 
     cdef double getdiscr(self, double a, double b, double c, double d):
         return sqrt(a*a + 4*b*c-2*a*d + d*d)
@@ -209,10 +209,10 @@ cdef class RegEst:
         cdef double ll = (1. + exp(-2.*length))/2.
         cdef double ldl = (1. - exp(-2.*length))/2.
 
-        cdef double a = self.geta(self.N, ll, ldl, s)
-        cdef double b = self.getb(self.N, ll, ldl, s)
-        cdef double c = self.getc(self.N, ll, ldl, s)
-        cdef double d = self.getd(self.N, ll, ldl, s)
+        cdef double a = self.geta(ll, s)
+        cdef double b = self.getb(ldl, s)
+        cdef double c = self.getc(ll, s)
+        cdef double d = self.getd(ldl, s)
 
         cdef double discr = self.getdiscr(a, b, c, d)
 
