@@ -179,10 +179,10 @@ cdef class RegEst:
         return sqrt(a*a + 4*b*c-2*a*d + d*d)
 
     cdef double get_root_1(self, double a, double b, double c, double d):
-        return 0.5*(a+d-self.getdiscr(a, b, c, d))
+        return 0.5*(a+d-self.get_discr(a, b, c, d))
 
     cdef double get_root_2(self, double a, double b, double c, double d):
-        return 0.5*(a+d+self.getdiscr(a, b, c, d))
+        return 0.5*(a+d+self.get_discr(a, b, c, d))
 
     @cython.cdivision(True)
     cdef double get_vn_2(self,
@@ -289,7 +289,7 @@ cdef class RegEst:
 
     def estimate(self, x0=np.array([5, 5]), weights=[1]):
         if len(weights) == 1:
-            self.weights = np.array(weights*self.populations_number, dtype=float)
+            self.weights = np.array(weights*self.populations_number*2, dtype=float)
         else:
             self.weights = np.array(weights, dtype=float)
         x = least_squares(self.calculate_loss_vector, x0,
