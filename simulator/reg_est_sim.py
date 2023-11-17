@@ -1,17 +1,15 @@
 import sys
 import msprime
 from scipy.stats import kstat
+import numpy as np
 
 from proportions import kMoment
 from sim import const_gen_flow
 
-T = int(sys.argv[1])
-sg = float(sys.argv[2])
+T_start = int(sys.argv[1])
+duration = int(sys.argv[2])
 seed = int(sys.argv[3])
 
-
-T_start = 5
-duration = 5
 total_s = 0.3
 sim_num = 22
 

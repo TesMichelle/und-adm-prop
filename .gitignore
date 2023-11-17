@@ -2,6 +2,7 @@
 adm_res/
 docs/
 simulations/
+real data/
 local_ancestry_moments/
 *.ipynb
 .DS_Store

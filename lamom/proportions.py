@@ -24,10 +24,24 @@ class kMoment:
         self.model.sample(self.sample_k1, self.sample_k2, self.sample_k3, self.lengths)
 
     def sample(self, sample_k1, sample_k2, sample_k3, lengths):
-        self.model.sample(np.array(sample_k1, dtype=float),
-                          np.array(sample_k2, dtype=float),
-                          np.array(sample_k3, dtype=float),
-                          np.array(lengths, dtype=float))
+
+        sample_k1 = np.array(sample_k1, dtype=float)
+        sample_k2 = np.array(sample_k2, dtype=float)
+        sample_k3 = np.array(sample_k3, dtype=float)
+        lengths = np.array(lengths, dtype=float)
+
+        perm = lengths.argsort()
+        sample_k1 = sample_k1[perm]
+        sample_k2 = sample_k2[perm]
+        sample_k3 = sample_k3[perm]
+        lengths = lengths[perm]
+
+        print('Your k-statistics (sorted by length):')
+        print(f'Length (M.)\tk_1\tk_2\tk_3')
+        for i in range(lengths.shape[0]):
+            print(f'{lengths[i]:.2f}\t{sample_k1[i]:.8f}\t{sample_k2[i]:.8f}\t{sample_k3[i]:.8f}')
+
+        self.model.sample(sample_k1, sample_k2, sample_k3, lengths)
     # msprime
     def get_individuals_nodes(self, ts, population, sampled=False):
         nodes = [] # nodes of samples

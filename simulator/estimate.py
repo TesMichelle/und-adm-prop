@@ -3,8 +3,8 @@ import sys
 from proportions import kMoment
 import numpy as np
 
-file = str(sys.argv[0])
-seed = int(sys.argv[1])
+file = str(sys.argv[1])
+seed = int(sys.argv[2])
 
 rng = np.random.default_rng(seed=seed)
 x0 = rng.uniform(1, 9, size=2)
